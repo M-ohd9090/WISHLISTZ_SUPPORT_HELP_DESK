@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IT Helpdesk | Wishlistz</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <a href="https://wishlistz.com" target="_blank">🛒 Wishlistz</a>
+  </div>
+  <ul>
+    <li>👤 Account Info</li>
+    <li>⭐ Rate Us</li>
+    <li>📤 Share App</li>
+    <li>ℹ️ About Wishlistz</li>
+    <li class="logout">🚪 Logout</li>
+  </ul>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HEADER -->
+<header>
+  <h1>IT Helpdesk</h1>
+  <p>Support tool for Wishlistz E-Commerce Platform</p>
+</header>
+
+<!-- HOME FOOTER TAB -->
+<section class="card">
+  <h2>Logged-in User</h2>
+  <p><b>Name:</b> Demo User</p>
+  <p><b>Email:</b> demo@wishlistz.com</p>
+  <button>Instant Enquiry</button>
+</section>
+
+<!-- EXPLORE TABS -->
+<div class="tabs">
+  <button onclick="openTab('orders')" class="active">Orders</button>
+  <button onclick="openTab('payments')">Payments</button>
+  <button onclick="openTab('tickets')">Tickets</button>
+  <button onclick="openTab('info')">Info & Deals</button>
+</div>
+
+<!-- ORDERS -->
+<section id="orders" class="tabContent active">
+  <h2>Order Services</h2>
+  <div class="subtabs">
+    <button onclick="openSubTab('track')">Track Order</button>
+    <button onclick="openSubTab('return')">Return</button>
+    <button onclick="openSubTab('refund')">Refund</button>
+    <button onclick="openSubTab('report')">Report Order</button>
+  </div>
+
+  <div id="track" class="subContent active">
+    <input placeholder="Order ID">
+    <button>Track</button>
+  </div>
+
+  <div id="return" class="subContent">Return request submitted.</div>
+  <div id="refund" class="subContent">Refund will be processed.</div>
+  <div id="report" class="subContent">Defective / Wrong order reported.</div>
+</section>
+
+<!-- PAYMENTS -->
+<section id="payments" class="tabContent">
+  <h2>Payment Support</h2>
+  <ul>
+    <li>Payment History</li>
+    <li>Failed Transactions</li>
+    <li>Review Payments</li>
+  </ul>
+</section>
+
+<!-- TICKETS -->
+<section id="tickets" class="tabContent">
+  <h2>IT Helpdesk Tickets</h2>
+  <input id="issue" placeholder="Describe Issue">
+  <button onclick="raiseTicket()">Raise Ticket</button>
+  <ul id="ticketList"></ul>
+</section>
+
+<!-- INFO -->
+<section id="info" class="tabContent">
+  <h2>Wishlistz Resources</h2>
+  <div class="calendar">
+    <div>Mon<br>10% OFF</div>
+    <div>Wed<br>Flash Sale</div>
+    <div>Fri<br>20% OFF</div>
+  </div>
+  <p>About Wishlistz & Co-Partners</p>
+</section>
+
+<footer>
+  © 2026 Wishlistz IT Helpdesk
+</footer>
+
+</div>
+
+<script src="logic.js"></script>
+</body>
+</html>

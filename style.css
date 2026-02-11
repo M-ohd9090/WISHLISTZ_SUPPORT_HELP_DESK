@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  display: flex;
+  background: #f1f5f9;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #020617;
+  color: white;
+  height: 100vh;
+  padding: 20px;
+}
+
+.sidebar .logo {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.sidebar ul li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.logout {
+  color: #f87171;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(90deg,#1e3a8a,#2563eb);
+  color: white;
+  padding: 20px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.tabs button {
+  padding: 10px;
+  border: none;
+  background: #c7d2fe;
+  cursor: pointer;
+}
+
+.tabs .active {
+  background: #2563eb;
+  color: white;
+}
+
+/* TAB CONTENT */
+.tabContent {
+  display: none;
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.tabContent.active {
+  display: block;
+}
+
+/* SUB TABS */
+.subtabs button {
+  margin: 5px;
+}
+
+/* CALENDAR */
+.calendar {
+  display: flex;
+  gap: 15px;
+}
+
+.calendar div {
+  background: #e0f2fe;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #020617;
+  color: #cbd5e1;
+}
