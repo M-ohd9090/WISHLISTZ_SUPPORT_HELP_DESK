@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlistz Helpdesk - Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="../style.css">
+  <!-- Calendar Page Styles -->
+  <link rel="stylesheet" href="calendar.css">
+  <!-- Chatbot Styles -->
+  <link rel="stylesheet" href="../Chatbot/styleBot.css">
+</head>
+
+<body>
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="logo-circle">
+          <img src="../Wishlistz_Small_Logo.jpeg" alt="Wishlistz Logo">
+        </div>
+        <span class="brand-text">
+          <a href="https://wishlistz.in/" target="_blank" style="color:white; text-decoration:none;">Wishlistz</a>
+        </span>
+      </div>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <ul class="sidebar-menu">
+<li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
+      <li><a href="#" id="reviewLink">⭐ Review</a></li>
+      <li><a href="#">🚪 Sign Out</a></li>
+    </ul>
+  </aside>
+
+  <!-- QR Code Modal -->
+<div class="qr-backdrop" id="qrBackdrop"></div>
+<div class="qr-modal" id="qrModal">
+  <span class="qr-close" id="qrClose">&times;</span>
+  <h3>Share Wishlistz</h3>
+  <p>Scan this QR code or copy the link below:</p>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://wishlistz.in" alt="Wishlistz QR Code">
+  <div class="copy-link">
+    <input type="text" id="shareLink" value="https://wishlistz.in" readonly>
+    <button id="copyButton">Copy</button>
+  </div>
+</div>
+
+
+  <!-- HAMBURGER -->
+  <button class="hamburger open" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main class="sidebar-open">
+
+    <header class="calendar-header">
+      <div class="header-left">
+        <h1>Upcoming Festive Deals</h1>
+        <p>Mark your calendar and don’t miss out!</p>
+      </div>
+    </header>
+
+    <section class="calendar-grid">
+      <div class="calendar-card">
+        <h2>🎉 Holi Sale</h2>
+        <p>Starts: March 20, 2026</p>
+        <p>Enjoy colorful discounts on fashion and home essentials. <br>
+            <br>Use Code : <b>Holi2026</b></p>
+      </div>
+
+      <div class="calendar-card">
+        <h2>🕌 Eid Specials</h2>
+        <p>Starts: April 10, 2026</p>
+        <p>Festive offers on clothing, gifts, and accessories.<br>
+            <br>Use Code : <b>Eid2026</b></p>
+      </div>
+
+      <div class="calendar-card">
+        <h2>🎆 Diwali Mega Sale</h2>
+        <p>Starts: October 25, 2026</p>
+        <p>Biggest discounts of the year on electronics and decor.<br>
+            <br>Use Code : <b>Dipawali</b></p>
+      </div>
+
+      <div class="calendar-card">
+        <h2>🎄 Christmas Deals</h2>
+        <p>Starts: December 15, 2026</p>
+        <p>Special offers on toys, gadgets, and festive decorations.<br>
+            <br>Use Code : <b>Xmas2026</b></p>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer-bar">
+      <a href="../index.html" class="footer-icon">
+        <span class="icon">🏠</span>
+        <p>Home</p>
+      </a>
+      <a href="../Services/services.html" class="footer-icon">
+        <span class="icon">🛠️</span>
+        <p>Services</p>
+      </a>
+      <a href="../Orders/orders.html" class="footer-icon">
+        <span class="icon">📦</span>
+        <p>Orders</p>
+      </a>
+      <a href="../Notifications/notifications.html" class="footer-icon">
+        <span class="icon">🔔</span>
+        <p>Notifications</p>
+      </a>
+      <a href="../Profile/profile.html" class="footer-icon">
+        <span class="icon">👤</span>
+        <p>Profile</p>
+      </a>
+      <a href="calendar.html" class="footer-icon active">
+        <span class="icon">📅</span>
+        <p>Calendar</p>
+      </a>
+    </footer>
+  </main>
+
+  <!-- Review Modal -->
+<div class="review-backdrop" id="reviewBackdrop"></div>
+<div class="review-modal" id="reviewModal">
+  <span class="review-close" id="reviewClose">&times;</span>
+  <h3>Leave a Review</h3>
+  <p>We’d love to hear your feedback!</p>
+  <form id="reviewForm">
+    <textarea id="reviewText" rows="4" placeholder="Write your review here..." required></textarea>
+    <div class="rating">
+      <label><input type="radio" name="stars" value="1"> ⭐</label>
+      <label><input type="radio" name="stars" value="2"> ⭐⭐</label>
+      <label><input type="radio" name="stars" value="3"> ⭐⭐⭐</label>
+      <label><input type="radio" name="stars" value="4"> ⭐⭐⭐⭐</label>
+      <label><input type="radio" name="stars" value="5"> ⭐⭐⭐⭐⭐</label>
+    </div>
+    <button type="submit">Submit Review</button>
+  </form>
+  <div id="reviewResult" style="margin-top:10px; display:none; color:green;">
+    Thank you for your feedback!
+  </div>
+</div>
+
+  <!-- ===================== CHATBOT ===================== -->
+  <div id="chatbot-container">
+    <div id="minimizedChat" class="minimized-chat">
+      <div class="minimized-logo">
+        <img src="../Wishlistz_Small_Logo.jpeg" alt="Wishlistz Logo">
+      </div>
+      <span class="minimized-text">Need help?</span>
+    </div>
+
+    <div class="chat-container hidden" id="chatWindow">
+      <div class="chat-header">
+        <div class="header-content">
+          <div class="bot-avatar">
+            <img src="../Wishlistz_Small_Logo.jpeg" alt="Wishlistz Logo">
+          </div>
+          <div class="header-info">
+            <h1 class="bot-name">Wishlistz</h1>
+            <span class="status">
+              <span class="status-dot"></span>
+              Online
+            </span>
+          </div>
+          <button id="themeToggle" class="theme-toggle">🌓</button>
+          <button id="minimizeChatBtn" class="minimize-toggle">—</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+          <div class="message-content">
+            <p>Welcome to Wishlistz 👋</p>
+            <span class="message-time">Just now</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-container">
+        <div class="input-wrapper">
+          <input type="file" id="fileInput" class="file-input" hidden>
+          <button id="attachButton" class="attach-button">📎</button>
+          <input type="text" id="messageInput" class="message-input" placeholder="Type your message…">
+          <button id="sendButton" class="send-button">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script src="../app.js"></script>
+  <script src="../Chatbot/appBot.js"></script>
+  <script src="calendar.js"></script> 
+
+  <!-- Inline toggle script -->
+  <script>
+    // Sidebar toggle
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.querySelector(".sidebar");
+    const mainContent = document.querySelector("main");
+
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("closed");
+      hamburger.classList.toggle("open");
+      mainContent.classList.toggle("sidebar-open");
+    });
+
+    // Chatbot toggle
+    const minimizedChat = document.getElementById("minimizedChat");
+    const chatWindow = document.getElementById("chatWindow");
+    const minimizeChatBtn = document.getElementById("minimizeChatBtn");
+
+    minimizedChat.addEventListener("click", () => {
+      chatWindow.classList.remove("hidden");
+      minimizedChat.style.display = "none";
+    });
+
+    minimizeChatBtn.addEventListener("click", () => {
+      chatWindow.classList.add("hidden");
+      minimizedChat.style.display = "flex";
+    });
+
+    
+  </script>
+
+  
+</body>
+</html>

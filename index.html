@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlistz Helpdesk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Chatbot Styles -->
+  <link rel="stylesheet" href="Chatbot/styleBot.css">
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="logo-circle">
+          <img src="Wishlistz_Small_Logo.jpeg" alt="Wishlistz Logo">
+        </div>
+        <span class="brand-text"><a href="https://wishlistz.in/" target="_blank" style="color:white; text-decoration:none;">Wishlistz</a></span>
+      </div>
+    </div>
+
+    <hr class="sidebar-divider">
+
+    <ul class="sidebar-menu">
+      <li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
+      <li><a href="#" id="reviewLink">⭐ Review</a></li>
+      <li><a href="#">🚪 Sign Out</a></li>
+    </ul>
+  </aside>
+
+  <!-- HAMBURGER -->
+  <button class="hamburger open" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- MAIN -->
+  <main class="sidebar-open">
+
+    <header>
+      <div class="header-left">
+        <h1>Customer Helpdesk</h1>
+        <p>How can we help you today?</p>
+      </div>
+    </header>
+
+    <section class="card-grid">
+
+      <!-- ORDERS -->
+      <div class="card">
+        <h2>📦 Orders</h2>
+        <ul>
+          <li><a href="Services/services.html#trackOrder">Track Order</a></li>
+          <li><a href="Services/services.html#returnOrder">Return Order</a></li>
+          <li><a href="Services/services.html#replaceItem">Replace Item</a></li>
+          <li><a href="Services/services.html#cancelOrder">Cancel Order</a></li>
+        </ul>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div class="card">
+        <h2>💳 Payments</h2>
+        <ul>
+          <li><a href="Services/services.html#paymentHistory">Payment History</a></li>
+          <li><a href="Services/services.html#failedPayments">Failed Payment</a></li>
+          <li><a href="Services/services.html#refundStatus">Refund Status</a></li>
+        </ul>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="card">
+        <h2>🎫 Support</h2>
+        <ul>
+          <li><a href="Services/services.html#raiseTicket">Raise Ticket</a></li>
+          <li><a href="Services/services.html#ticketStatus">Ticket Status</a></li>
+          <li><a href="Services/services.html#contactUs">Contact Us</a></li>
+          <li><a href="Services/services.html#faq">FAQ</a></li>
+          <li><a href="Services/services.html#about">About Wishlistz</a></li>
+        </ul>
+      </div>
+
+      <!-- QUICK INQUIRY FORM -->
+      <div class="card">
+        <h2>⚡ Quick Inquiry</h2>
+        <form class="inquiry-form">
+          <input type="text" placeholder="Subject" required>
+          <textarea placeholder="Write your message..." rows="3" required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+    </section>
+
+        <!-- FOOTER -->
+    <footer class="footer-bar">
+      <a href="index.html" class="footer-icon active">
+        <span class="icon">🏠</span>
+        <p>Home</p>
+      </a>
+      <a href="Services/services.html" class="footer-icon">
+        <span class="icon">🛠️</span>
+        <p>Services</p>
+      </a>
+      <a href="Orders/orders.html" class="footer-icon">
+        <span class="icon">📦</span>
+        <p>Orders</p>
+      </a>
+      <a href="Notifications/notifications.html" class="footer-icon">
+        <span class="icon">🔔</span>
+        <p>Notifications</p>
+      </a>
+      <a href="Profile/profile.html" class="footer-icon">
+        <span class="icon">👤</span>
+        <p>Profile</p>
+      </a>
+      <a href="Calendar/calendar.html" class="footer-icon">
+        <span class="icon">📅</span>
+        <p>Calendar</p>
+      </a>
+    </footer>
+
+  </main>
+
+  <!-- ================= CHATBOT ================= -->
+  <div id="chatbot-container">
+    <!-- Minimized button -->
+    <div id="minimizedChat" class="minimized-chat">
+      <div class="minimized-logo">
+        <img src="Wishlistz_Small_Logo.jpeg" alt="Wishlistz Logo">
+      </div>
+      <span class="minimized-text">Need help?</span>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-container hidden" id="chatWindow">
+      <div class="chat-header">
+        <div class="header-content">
+          <div class="bot-avatar">
+            <img src="Wishlistz_Small_Logo.jpeg" alt="Wishlistz Logo">
+          </div>
+          <div class="header-info">
+            <h1 class="bot-name">Wishlistz</h1>
+            <span class="status">
+              <span class="status-dot"></span>
+              Online
+            </span>
+          </div>
+          <button id="themeToggle" class="theme-toggle">🌓</button>
+          <button id="minimizeChatBtn" class="minimize-toggle">—</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+          <div class="message-content">
+            <p>Welcome to Wishlistz 👋</p>
+            <span class="message-time">Just now</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-container">
+        <div class="input-wrapper">
+          <input type="file" id="fileInput" class="file-input" hidden>
+          <button id="attachButton" class="attach-button">📎</button>
+          <input type="text" id="messageInput" class="message-input" placeholder="Type your message…">
+          <button id="sendButton" class="send-button">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =========================================== -->
+
+  <!-- SHARE US MODAL -->
+  <div class="qr-backdrop" id="qrBackdrop"></div>
+  <div class="qr-modal" id="qrModal">
+    <span class="qr-close" id="qrClose">&times;</span>
+    <h3>Share Wishlistz</h3>
+    <p>Scan this QR code or copy the link below:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://wishlistz.in" alt="Wishlistz QR Code">
+    <div class="copy-link">
+      <input type="text" id="shareLink" value="https://wishlistz.in" readonly>
+      <button id="copyButton">Copy</button>
+    </div>
+  </div>
+
+  <!-- REVIEW MODAL -->
+  <div class="review-backdrop" id="reviewBackdrop"></div>
+  <div class="review-modal" id="reviewModal">
+    <span class="review-close" id="reviewClose">&times;</span>
+    <h3>Leave a Review</h3>
+    <p>We’d love to hear your feedback!</p>
+    <form id="reviewForm">
+      <textarea id="reviewText" rows="4" placeholder="Write your review here..." required></textarea>
+      <div class="rating">
+        <label><input type="radio" name="stars" value="1"> ⭐</label>
+        <label><input type="radio" name="stars" value="2"> ⭐⭐</label>
+        <label><input type="radio" name="stars" value="3"> ⭐⭐⭐</label>
+        <label><input type="radio" name="stars" value="4"> ⭐⭐⭐⭐</label>
+        <label><input type="radio" name="stars" value="5"> ⭐⭐⭐⭐⭐</label>
+      </div>
+      <button type="submit">Submit Review</button>
+    </form>
+    <div id="reviewResult" style="margin-top:10px; display:none; color:green;">
+      Thank you for your feedback!
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script src="Chatbot/appBot.js"></script>
+
+</body>
+</html>
