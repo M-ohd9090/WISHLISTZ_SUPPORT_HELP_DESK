@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlistz Helpdesk - Customer Search</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="customer.css">
+  <link rel="stylesheet" href="../Chatbot/styleBot.css">
+</head>
+
+<body>
+
+<!-- ===================== SIDEBAR ===================== -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="brand">
+      <div class="logo-circle">
+        <img src="../Wishlistz_Small_Logo.jpeg">
+      </div>
+      <span class="brand-text">Wishlistz</span>
+    </div>
+  </div>
+
+  <hr class="sidebar-divider">
+
+  <ul class="sidebar-menu">
+    <li><a href="../Notifications/notifications.html">📋 Assigned Tickets</a></li>
+    <li><a href="customer.html">👥 Customer Search</a></li>
+    <li><a href="../Orders/orders.html">📊 Reports</a></li>
+    <li><a href="../index.html">🚪 Sign Out</a></li>
+  </ul>
+</aside>
+
+<button class="hamburger open" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main class="sidebar-open">
+
+  <header class="customer-header">
+    <h1>Customer Search</h1>
+    <p>Search and view registered customers</p>
+  </header>
+
+  <section class="customer-search-section">
+
+    <input 
+      type="text"
+      id="customerSearchInput"
+      placeholder="Search by name, email or phone..."
+      class="customer-search-input"
+    >
+
+    <div id="customerResults" class="customer-results"></div>
+
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer-bar">
+  <a href="../index.html" class="footer-icon">
+    <span class="icon">🏠</span><p>Home</p>
+  </a>
+  <a href="../Services/services.html" class="footer-icon">
+    <span class="icon">🛠️</span><p>Services</p>
+  </a>
+  <a href="../Orders/orders.html" class="footer-icon">
+    <span class="icon">📦</span><p>Orders</p>
+  </a>
+  <a href="../Notifications/notifications.html" class="footer-icon">
+    <span class="icon">🔔</span><p>Notifications</p>
+  </a>
+  <a href="customer.html" class="footer-icon active">
+    <span class="icon">👤</span><p>Customer</p>
+  </a>
+  <a href="../Calendar/calendar.html" class="footer-icon">
+    <span class="icon">📅</span><p>Calendar</p>
+  </a>
+</footer>
+
+<script src="customer.js"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger");
+const sidebar = document.querySelector(".sidebar");
+const mainContent = document.querySelector("main");
+
+hamburger.addEventListener("click", () => {
+  sidebar.classList.toggle("closed");
+  mainContent.classList.toggle("sidebar-open");
+  hamburger.classList.toggle("open");
+});
+</script>
+
+</body>
+</html>

@@ -368,8 +368,8 @@ background: linear-gradient(135deg, #ff416c, #0c4e80);
 /* ===================== CHATBOT ===================== */
 #chatbot-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
   z-index: 5000;
 }
 
@@ -437,4 +437,51 @@ background: linear-gradient(135deg, #ff416c, #0c4e80);
     height: 60%;
     right: 5%;
   }
+}
+
+.order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.order-details p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.status.delivered { background: #2ecc71; }
+.status.transit { background: #3498db; }
+.status.cancelled { background: #e74c3c; }
+.status.pending { background: #f39c12; }
+
+/* ===================== ORDER SEARCH ===================== */
+.order-search-section {
+  margin: 20px auto;
+  max-width: 700px;
+  text-align: center;
+}
+
+.order-search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.order-search-input:focus {
+  border-color: #6C3BFF;
+  box-shadow: 0 0 8px rgba(108,59,255,0.3);
 }

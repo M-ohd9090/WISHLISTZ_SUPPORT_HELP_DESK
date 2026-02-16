@@ -35,18 +35,19 @@
         <hr class="sidebar-divider">
 
         <ul class="sidebar-menu">
-            <li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
-            <li><a href="#" id="reviewLink">⭐ Review</a></li>
-            <li><a href="#">🚪 Sign Out</a></li>
+      <li><a href="../Notifications/notifications.html">📋 Assigned Tickets</a></li>
+      <li><a href="../Customer/customer.html">👥 Customer Search</a></li>
+      <li><a href="../Orders/orders.html">📊 Reports</a></li>
+      <li><a href="../index.html">🚪 Sign Out</a></li>
         </ul>
     </aside>
 
     <!-- ===================== HAMBURGER ===================== -->
-    <button class="hamburger open" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+     <button class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
     <!-- ===================== MAIN CONTENT ===================== -->
     <main id="mainContent" class="sidebar-open">
@@ -126,9 +127,9 @@
                 <span class="icon">🔔</span>
                 <p>Notifications</p>
             </a>
-            <a href="../Profile/profile.html" class="footer-icon">
+            <a href="../Customer/customer.html" class="footer-icon">
                 <span class="icon">👤</span>
-                <p>Profile</p>
+                <p>Customer</p>
             </a>
             <a href="../Calendar/calendar.html" class="footer-icon">
                 <span class="icon">📅</span>
@@ -390,8 +391,6 @@
         </div>
     </div>
 
-
-
     <!-- ===================== CONTACT US MODAL ===================== -->
     <div class="contact-backdrop" id="contactBackdrop"></div>
     <div class="contact-modal" id="contactModal">
@@ -413,7 +412,6 @@
         <p><b>5.</b> Can I contact Wishlistz on social media?<br>
             Yes, follow and message us on Instagram, Twitter, and Facebook @Wishlistz.</p>
     </div>
-
 
     <!-- ===================== FAQ MODAL ===================== -->
     <div class="faq-backdrop" id="faqBackdrop"></div>
@@ -454,25 +452,7 @@
     <script src="../Chatbot/appBot.js"></script>
     <script src="services.js"></script>
 
-    <!-- Inline toggle script -->
     <script>
-        // Sidebar toggle
-        const hamburger = document.getElementById("hamburger");
-        const sidebar = document.querySelector(".sidebar");
-        const mainContent = document.getElementById("mainContent");
-
-        hamburger.addEventListener("click", () => {
-            sidebar.classList.toggle("closed");
-            mainContent.classList.toggle("sidebar-open");
-            hamburger.classList.toggle("open");
-
-            if (sidebar.classList.contains("closed")) {
-                mainContent.style.marginLeft = "0";
-            } else {
-                mainContent.style.marginLeft = "220px";
-            }
-        });
-
         // CONTACT US modal toggle
         const contactCard = document.getElementById("contactCard");
         const contactModal = document.getElementById("contactModal");
@@ -496,7 +476,6 @@
                 contactBackdrop.classList.remove("active");
             });
         }
-
 
         // Chatbot toggle
         const minimizedChat = document.getElementById("minimizedChat");

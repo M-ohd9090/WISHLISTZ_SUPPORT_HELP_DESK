@@ -32,11 +32,19 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-<li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
-      <li><a href="#" id="reviewLink">⭐ Review</a></li>
-      <li><a href="#">🚪 Sign Out</a></li>
+      <li><a href="../Notifications/notifications.html">📋 Assigned Tickets</a></li>
+      <li><a href="../Customer/customer.html">👥 Customer Search</a></li>
+      <li><a href="../Orders/orders.html">📊 Reports</a></li>
+      <li><a href="../index.html">🚪 Sign Out</a></li>
     </ul>
   </aside>
+
+    <!-- HAMBURGER -->
+  <button class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 
   <!-- QR Code Modal -->
 <div class="qr-backdrop" id="qrBackdrop"></div>
@@ -51,15 +59,7 @@
   </div>
 </div>
 
-
-  <!-- HAMBURGER -->
-  <button class="hamburger open" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <!-- ===================== MAIN CONTENT ===================== -->
+<!-- ===================== MAIN CONTENT ===================== -->
   <main class="sidebar-open">
 
     <header class="calendar-header">
@@ -117,9 +117,9 @@
         <span class="icon">🔔</span>
         <p>Notifications</p>
       </a>
-      <a href="../Profile/profile.html" class="footer-icon">
+      <a href="../Customer/customer.html" class="footer-icon">
         <span class="icon">👤</span>
-        <p>Profile</p>
+        <p>Customer</p>
       </a>
       <a href="calendar.html" class="footer-icon active">
         <span class="icon">📅</span>
@@ -200,7 +200,7 @@
   <!-- ===================== SCRIPTS ===================== -->
   <script src="../app.js"></script>
   <script src="../Chatbot/appBot.js"></script>
-  <script src="calendar.js"></script> 
+  <script src="calendar.js"></script>
 
   <!-- Inline toggle script -->
   <script>
@@ -230,9 +230,7 @@
       minimizedChat.style.display = "flex";
     });
 
-    
   </script>
 
-  
 </body>
 </html>

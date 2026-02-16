@@ -32,14 +32,15 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
-      <li><a href="#" id="reviewLink">⭐ Review</a></li>
-      <li><a href="#">🚪 Sign Out</a></li>
+      <li><a href="../Notifications/notifications.html">📋 Assigned Tickets</a></li>
+      <li><a href="../Customer/customer.html">👥 Customer Search</a></li>
+      <li><a href="../Orders/orders.html">📊 Reports</a></li>
+      <li><a href="../index.html">🚪 Sign Out</a></li>
     </ul>
   </aside>
 
   <!-- ===================== HAMBURGER ===================== -->
-  <button class="hamburger open" id="hamburger">
+   <button class="hamburger" id="hamburger">
     <span></span>
     <span></span>
     <span></span>
@@ -50,36 +51,38 @@
 
     <header class="notifications-header">
       <div class="header-left">
-        <h1>Notifications</h1>
-        <p>Stay updated with your latest alerts</p>
+        <h1>Assigned Complaint Notifications</h1>
+        <p>Tickets assigned to you for resolution</p>
       </div>
     </header>
 
     <section class="notifications-section">
-      <div class="notification-card">
-        <h3>📦 Order Shipped</h3>
-        <p>Your order #1024 has been shipped and is on the way.</p>
-        <span class="time">2 hours ago</span>
-      </div>
 
-      <div class="notification-card">
-        <h3>💳 Payment Successful</h3>
-        <p>Your payment for order #1025 was processed successfully.</p>
-        <span class="time">Yesterday</span>
-      </div>
+  <div class="notification-card">
+    <h3>🔔 Ticket #401 Assigned</h3>
+    <p>Customer reported login issue. Please resolve within 24 hours.</p>
+    <span class="time">10 minutes ago</span>
+  </div>
 
-      <div class="notification-card">
-        <h3>🎉 Festive Deal</h3>
-        <p>Diwali Mega Sale starts October 25! Don’t miss out.</p>
-        <span class="time">3 days ago</span>
-      </div>
+  <div class="notification-card">
+    <h3>⚠️ High Priority Ticket #402</h3>
+    <p>Refund amount not credited for Business customer.</p>
+    <span class="time">1 hour ago</span>
+  </div>
 
-      <div class="notification-card">
-        <h3>⚠️ Failed Payment</h3>
-        <p>Your payment attempt for order #1026 failed. Please retry.</p>
-        <span class="time">1 week ago</span>
-      </div>
-    </section>
+  <div class="notification-card">
+    <h3>📞 Escalated Ticket #403</h3>
+    <p>Customer complaint escalated to Level 2 support.</p>
+    <span class="time">Yesterday</span>
+  </div>
+
+  <div class="notification-card">
+    <h3>✅ Ticket #390 Resolved</h3>
+    <p>You successfully resolved a payment issue ticket.</p>
+    <span class="time">2 days ago</span>
+  </div>
+
+</section>
 
     <!-- ===================== FOOTER ===================== -->
     <footer class="footer-bar">
@@ -99,9 +102,9 @@
         <span class="icon">🔔</span>
         <p>Notifications</p>
       </a>
-      <a href="../Profile/profile.html" class="footer-icon">
+      <a href="../Customer/customer.html" class="footer-icon">
         <span class="icon">👤</span>
-        <p>Profile</p>
+        <p>Customers</p>
       </a>
       <a href="../Calendar/calendar.html" class="footer-icon">
         <span class="icon">📅</span>
@@ -192,13 +195,12 @@
   </div>
 </div>
 
-
   <!-- ===================== SCRIPTS ===================== -->
   <script src="../app.js"></script>
   <script src="../Chatbot/appBot.js"></script>
   <script src="notifications.js"></script>
 
-  <!-- Inline toggle script -->
+  Inline toggle script
   <script>
     // Sidebar toggle
     const hamburger = document.getElementById("hamburger");

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Wishlistz Helpdesk</title>
+  <title>Wishlistz Support Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,9 +28,11 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
-      <li><a href="#" id="reviewLink">⭐ Review</a></li>
-      <li><a href="#">🚪 Sign Out</a></li>
+      <li><a href="../Notifications/notifications.html">📋 Assigned Tickets</a></li>
+      <li><a href="../Customer/customer.html">👥 Customer Search</a></li>
+      <li><a href="../Orders/orders.html">📊 Reports</a></li>
+      <li><a href="#" id="sendInquiryLink">📩 Send Inquiry Form</a></li>
+      <li><a href="../index.html">➜] Sign Out</a></li>
     </ul>
   </aside>
 
@@ -46,8 +48,8 @@
 
     <header>
       <div class="header-left">
-        <h1>Customer Helpdesk</h1>
-        <p>How can we help you today?</p>
+        <h1>Wishlistz Support Dashboard</h1>
+        <p id="repGreeting"></p>
       </div>
     </header>
 
@@ -57,10 +59,10 @@
       <div class="card">
         <h2>📦 Orders</h2>
         <ul>
-          <li><a href="Services/services.html#trackOrder">Track Order</a></li>
-          <li><a href="Services/services.html#returnOrder">Return Order</a></li>
-          <li><a href="Services/services.html#replaceItem">Replace Item</a></li>
-          <li><a href="Services/services.html#cancelOrder">Cancel Order</a></li>
+          <li><a href="Services/services.html#ViewCustomerOrders">View Customer Orders</a></li>
+          <li><a href="Services/services.html#UpdateOrderStatus">Update Order Status</a></li>
+          <li><a href="Services/services.html#ApproveReturnRequest">Approve Return Request</a></li>
+          <li><a href="Services/services.html#HandleCancellation">Handle Cancellation</a></li>
         </ul>
       </div>
 
@@ -78,8 +80,9 @@
       <div class="card">
         <h2>🎫 Support</h2>
         <ul>
-          <li><a href="Services/services.html#raiseTicket">Raise Ticket</a></li>
-          <li><a href="Services/services.html#ticketStatus">Ticket Status</a></li>
+          <li><a href="Services/services.html#ViewAssignedTickets">View Assigned Tickets</a></li>
+          <li><a href="Services/services.html#UpdateTicketStatus">Update Ticket Status</a></li>
+          <li><a href="Services/services.html#CloseTicket">Close Ticket</a></li>
           <li><a href="Services/services.html#contactUs">Contact Us</a></li>
           <li><a href="Services/services.html#faq">FAQ</a></li>
           <li><a href="Services/services.html#about">About Wishlistz</a></li>
@@ -88,7 +91,7 @@
 
       <!-- QUICK INQUIRY FORM -->
       <div class="card">
-        <h2>⚡ Quick Inquiry</h2>
+        <h2>⚡ Ticket Update</h2>
         <form class="inquiry-form">
           <input type="text" placeholder="Subject" required>
           <textarea placeholder="Write your message..." rows="3" required></textarea>
@@ -98,6 +101,23 @@
 
     </section>
 
+    <!-- ===================== SEND INQUIRY MODAL ===================== -->
+<div class="inquiry-backdrop" id="inquiryBackdrop"></div>
+
+<div class="inquiry-modal" id="inquiryModal">
+  <span class="inquiry-close" id="inquiryClose">&times;</span>
+  <h3>Send Inquiry Form</h3>
+
+  <form id="inquiryForm">
+    <label>Customer Email:</label>
+    <input type="email" id="customerEmail" placeholder="Enter customer email" required>
+
+    <label>Message:</label>
+    <textarea id="inquiryMessage" rows="4" placeholder="Write your inquiry message..." required></textarea>
+
+    <button type="submit">Send Inquiry</button>
+  </form>
+</div>
 
     <!-- FOOTER -->
     <footer class="footer-bar">
@@ -117,10 +137,11 @@
         <span class="icon">🔔</span>
         <p>Notifications</p>
       </a>
-      <a href="Profile/profile.html" class="footer-icon">
-        <span class="icon">👤</span>
-        <p>Profile</p>
+      <a href="Customer/customer.html" class="footer-icon">
+        <span class="icon">👥</span>
+        <p>Customers</p>
       </a>
+
       <a href="Calendar/calendar.html" class="footer-icon">
         <span class="icon">📅</span>
         <p>Calendar</p>
@@ -154,7 +175,7 @@
             </span>
           </div>
           <button id="themeToggle" class="theme-toggle">🌓</button>
-          <button id="minimizeChatBtn" class="minimize-toggle">—</button>
+          <button id="minimizeChatBtn" class="minimize-toggle">✖️</button>
         </div>
       </div>
 
@@ -177,7 +198,6 @@
       </div>
     </div>
   </div>
-  <!-- =========================================== -->
 
   <!-- SHARE US MODAL -->
   <div class="qr-backdrop" id="qrBackdrop"></div>

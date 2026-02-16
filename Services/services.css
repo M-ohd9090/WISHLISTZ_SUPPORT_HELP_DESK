@@ -196,49 +196,41 @@ body {
 
 /* ===================== HAMBURGER ===================== */
 .hamburger {
-    position: fixed;
-    top: 15px;
-    left: 8px;
-    width: 28px;
-    height: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    z-index: 3000;
-    transition: left 0.4s ease;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 28px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 3000;
+  transition: 0.3s ease;
 }
 
 .hamburger span {
-    height: 3px;
-    width: 100%;
-    border-radius: 2px;
-    background: #6C3BFF;
-    transition: 0.3s ease;
-}
-
-.hamburger.open span {
-    background: #ffffff;
-}
-
-.sidebar:not(.closed)+.hamburger {
-    left: calc(220px - 37px);
-    /* adjust the offset */
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background: #6C3BFF;
+  transition: 0.3s ease;
 }
 
 .hamburger.open span:nth-child(1) {
-    transform: rotate(45deg) translateY(7px);
+  transform: rotate(45deg) translateY(7px);
 }
 
 .hamburger.open span:nth-child(2) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .hamburger.open span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-7px);
+  transform: rotate(-45deg) translateY(-7px);
 }
+
 
 /* ===================== MAIN CONTENT ===================== */
 main {

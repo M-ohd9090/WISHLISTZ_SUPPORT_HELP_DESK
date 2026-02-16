@@ -90,7 +90,7 @@ body {
 .hamburger {
   position: fixed;
   top: 15px;
-  left: 8px;
+  left: 8px; /* leftmost corner when sidebar is closed */
   width: 28px;
   height: 20px;
   display: flex;
@@ -115,7 +115,10 @@ body {
   background: #ffffff;
 }
 
-.sidebar:not(.closed) + .hamburger { left: calc(220px - 37px); /* adjust the offset */ }
+/* When sidebar is open → push hamburger to the right edge of sidebar */
+.sidebar:not(.closed) + .hamburger {
+  left: calc(220px - 37px); /* sidebar width (220px) minus offset */
+}
 
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translateY(7px);

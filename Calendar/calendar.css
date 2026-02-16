@@ -90,7 +90,7 @@ body {
 .hamburger {
   position: fixed;
   top: 15px;
-  left: 8px;              /* leftmost corner when sidebar is closed */
+  left: 8px; /* leftmost corner when sidebar is closed */
   width: 28px;
   height: 20px;
   display: flex;

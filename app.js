@@ -92,3 +92,59 @@ if (reviewFormEl) {
     }, 2000);
   });
 }
+
+// REPRESENTATIVE GREETING
+document.addEventListener("DOMContentLoaded", function () {
+
+  // REPRESENTATIVE GREETING
+  const repName = "Support Executive";
+  const greetingElement = document.getElementById("repGreeting");
+
+  if (greetingElement) {
+    greetingElement.innerText = "Welcome, " + repName + " 👋🏻";
+  }
+
+  // ===================== INQUIRY MODAL =====================
+  const sendInquiryLink = document.getElementById("sendInquiryLink");
+  const inquiryModal = document.getElementById("inquiryModal");
+  const inquiryBackdrop = document.getElementById("inquiryBackdrop");
+  const inquiryClose = document.getElementById("inquiryClose");
+  const inquiryForm = document.getElementById("inquiryForm");
+
+  if (sendInquiryLink) {
+    sendInquiryLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      inquiryModal.classList.add("active");
+      inquiryBackdrop.classList.add("active");
+    });
+  }
+
+  if (inquiryClose) {
+    inquiryClose.addEventListener("click", () => {
+      inquiryModal.classList.remove("active");
+      inquiryBackdrop.classList.remove("active");
+    });
+  }
+
+  if (inquiryBackdrop) {
+    inquiryBackdrop.addEventListener("click", () => {
+      inquiryModal.classList.remove("active");
+      inquiryBackdrop.classList.remove("active");
+    });
+  }
+
+  if (inquiryForm) {
+    inquiryForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("customerEmail").value;
+
+      alert(`Inquiry form sent to ${email}`);
+
+      inquiryModal.classList.remove("active");
+      inquiryBackdrop.classList.remove("active");
+      inquiryForm.reset();
+    });
+  }
+
+});

@@ -32,9 +32,10 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="shareUsLink">🔗 Share Us</a></li>
-      <li><a href="#" id="reviewLink">⭐ Review</a></li>
-      <li><a href="#">🚪 Sign Out</a></li>
+      <li><a href="../Notifications/notifications.html">📋 Assigned Tickets</a></li>
+      <li><a href="../Customer/customer.html">👥 Customer Search</a></li>
+      <li><a href="../Orders/orders.html">📊 Reports</a></li>
+      <li><a href="../index.html">🚪 Sign Out</a></li>
     </ul>
   </aside>
 
@@ -50,33 +51,86 @@
 
     <header class="orders-header">
       <div class="header-left">
-        <h1>My Orders</h1>
-        <p>Track your recent purchases and deliveries</p>
+        <h1>Order Management Dashboard</h1>
+        <p>Monitor and resolve customer order activities</p>
       </div>
     </header>
 
+    <!-- ===================== ORDER SEARCH BAR ===================== -->
+<section class="order-search-section">
+
+  <input
+    type="text"
+    id="orderSearchInput"
+    placeholder="Search by Order ID, Customer Name, Product..."
+    class="order-search-input"
+  >
+
+</section>
+
     <section class="orders-section">
-      <div class="order-card">
-        <h3>Order #1023</h3>
-        <p>Status: Delivered</p>
-        <p>Items: Wireless Headphones, Phone Case</p>
-        <span class="time">Delivered on Feb 10, 2026</span>
-      </div>
 
-      <div class="order-card">
-        <h3>Order #1024</h3>
-        <p>Status: In Transit</p>
-        <p>Items: Smartwatch</p>
-        <span class="time">Expected delivery: Feb 16, 2026</span>
-      </div>
+  <!-- ORDER 1 -->
+  <div class="order-card">
+    <div class="order-top">
+      <h3>Order ID: #1023</h3>
+      <span class="status delivered">Delivered</span>
+    </div>
 
-      <div class="order-card">
-        <h3>Order #1025</h3>
-        <p>Status: Cancelled</p>
-        <p>Items: Bluetooth Speaker</p>
-        <span class="time">Cancelled on Feb 12, 2026</span>
-      </div>
-    </section>
+    <div class="order-details">
+      <p><b>Product:</b> Wireless Headphones</p>
+      <p><b>Customer Name:</b> John Doe</p>
+      <p><b>Order Date:</b> 10 Feb 2026</p>
+      <p><b>Order Time:</b> 04:45 PM</p>
+      <p><b>Payment Method:</b> Credit Card</p>
+      <p><b>Order Amount:</b> ₹2,499</p>
+      <p><b>Delivery Address:</b> Pune, Maharashtra</p>
+      <p><b>Assigned Representative:</b> Tohid</p>
+      <p><b>Priority:</b> Medium</p>
+    </div>
+  </div>
+
+  <!-- ORDER 2 -->
+  <div class="order-card">
+    <div class="order-top">
+      <h3>Order ID: #1024</h3>
+      <span class="status transit">In Transit</span>
+    </div>
+
+    <div class="order-details">
+      <p><b>Product:</b> Smartwatch</p>
+      <p><b>Customer Name:</b> Priya Sharma</p>
+      <p><b>Order Date:</b> 12 Feb 2026</p>
+      <p><b>Order Time:</b> 11:30 AM</p>
+      <p><b>Payment Method:</b> UPI</p>
+      <p><b>Order Amount:</b> ₹3,199</p>
+      <p><b>Delivery Address:</b> Mumbai, Maharashtra</p>
+      <p><b>Assigned Representative:</b> Advait</p>
+      <p><b>Priority:</b> High</p>
+    </div>
+  </div>
+
+  <!-- ORDER 3 -->
+  <div class="order-card">
+    <div class="order-top">
+      <h3>Order ID: #1025</h3>
+      <span class="status cancelled">Cancelled</span>
+    </div>
+
+    <div class="order-details">
+      <p><b>Product:</b> Bluetooth Speaker</p>
+      <p><b>Customer Name:</b> Rahul Patil</p>
+      <p><b>Order Date:</b> 12 Feb 2026</p>
+      <p><b>Order Time:</b> 02:10 PM</p>
+      <p><b>Payment Method:</b> Debit Card</p>
+      <p><b>Order Amount:</b> ₹1,499</p>
+      <p><b>Delivery Address:</b> Nagpur, Maharashtra</p>
+      <p><b>Assigned Representative:</b> Simpi</p>
+      <p><b>Priority:</b> Low</p>
+    </div>
+  </div>
+
+</section>
 
     <!-- ===================== FOOTER ===================== -->
     <footer class="footer-bar">
@@ -96,9 +150,9 @@
         <span class="icon">🔔</span>
         <p>Notifications</p>
       </a>
-      <a href="../Profile/profile.html" class="footer-icon">
+      <a href="../Customer/customer.html" class="footer-icon">
         <span class="icon">👤</span>
-        <p>Profile</p>
+        <p>Customer</p>
       </a>
       <a href="../Calendar/calendar.html" class="footer-icon">
         <span class="icon">📅</span>
@@ -106,6 +160,7 @@
       </a>
     </footer>
   </main>
+
   <!-- Review Modal -->
 <div class="review-backdrop" id="reviewBackdrop"></div>
 <div class="review-modal" id="reviewModal">
@@ -127,7 +182,6 @@
     Thank you for your feedback!
   </div>
 </div>
-
 
   <!-- QR Code Modal -->
 <div class="qr-backdrop" id="qrBackdrop"></div>
@@ -194,117 +248,61 @@
   <script src="../Chatbot/appBot.js"></script>
   <script src="orders.js"></script>
 
-  <!-- Inline toggle script -->
-  <script>
-    // Sidebar toggle
-    const hamburger = document.getElementById("hamburger");
-    const sidebar = document.querySelector(".sidebar");
-    const mainContent = document.querySelector("main");
+ <script>
+document.addEventListener("DOMContentLoaded", function () {
 
+  /* ===================== SIDEBAR TOGGLE ===================== */
+  const hamburger = document.getElementById("hamburger");
+  const sidebar = document.querySelector(".sidebar");
+  const mainContent = document.querySelector("main");
+
+  if (hamburger) {
     hamburger.addEventListener("click", () => {
       sidebar.classList.toggle("closed");
       hamburger.classList.toggle("open");
       mainContent.classList.toggle("sidebar-open");
     });
+  }
 
-    // Chatbot toggle
-    const minimizedChat = document.getElementById("minimizedChat");
-    const chatWindow = document.getElementById("chatWindow");
-    const minimizeChatBtn = document.getElementById("minimizeChatBtn");
+  /* ===================== CHATBOT TOGGLE ===================== */
+  const minimizedChat = document.getElementById("minimizedChat");
+  const chatWindow = document.getElementById("chatWindow");
+  const minimizeChatBtn = document.getElementById("minimizeChatBtn");
 
+  if (minimizedChat) {
     minimizedChat.addEventListener("click", () => {
       chatWindow.classList.remove("hidden");
       minimizedChat.style.display = "none";
     });
+  }
 
+  if (minimizeChatBtn) {
     minimizeChatBtn.addEventListener("click", () => {
       chatWindow.classList.add("hidden");
       minimizedChat.style.display = "flex";
     });
+  }
 
-    // ================== SHARE US QR MODAL ==================
-const shareUsLink = document.getElementById("shareUsLink");
-const qrModal = document.getElementById("qrModal");
-const qrBackdrop = document.getElementById("qrBackdrop");
-const qrClose = document.getElementById("qrClose");
-const copyButton = document.getElementById("copyButton");
-const shareLink = document.getElementById("shareLink");
+  /* ===================== ORDER SEARCH ===================== */
+  const orderSearchInput = document.getElementById("orderSearchInput");
 
-if (shareUsLink) {
-  shareUsLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    qrModal.classList.add("active");
-    qrBackdrop.classList.add("active");
-  });
-}
+  if (orderSearchInput) {
+    orderSearchInput.addEventListener("input", function () {
 
-if (qrClose) {
-  qrClose.addEventListener("click", () => {
-    qrModal.classList.remove("active");
-    qrBackdrop.classList.remove("active");
-  });
-}
+      const filter = this.value.toLowerCase();
+      const orders = document.querySelectorAll(".order-card");
 
-if (qrBackdrop) {
-  qrBackdrop.addEventListener("click", () => {
-    qrModal.classList.remove("active");
-    qrBackdrop.classList.remove("active");
-  });
-}
+      orders.forEach(order => {
+        const text = order.innerText.toLowerCase();
 
-if (copyButton) {
-  copyButton.addEventListener("click", () => {
-    shareLink.select();
-    document.execCommand("copy");
-    copyButton.textContent = "Copied!";
-    setTimeout(() => { copyButton.textContent = "Copy"; }, 2000);
-  });
-}
+        order.style.display = text.includes(filter) ? "block" : "none";
+      });
 
-// ================== REVIEW MODAL ==================
-const reviewLink = document.getElementById("reviewLink");
-const reviewModal = document.getElementById("reviewModal");
-const reviewBackdrop = document.getElementById("reviewBackdrop");
-const reviewClose = document.getElementById("reviewClose");
-const reviewForm = document.getElementById("reviewForm");
-const reviewResult = document.getElementById("reviewResult");
+    });
+  }
 
-if (reviewLink) {
-  reviewLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    reviewModal.classList.add("active");
-    reviewBackdrop.classList.add("active");
-  });
-}
+});
+</script>
 
-if (reviewClose) {
-  reviewClose.addEventListener("click", () => {
-    reviewModal.classList.remove("active");
-    reviewBackdrop.classList.remove("active");
-  });
-}
-
-if (reviewBackdrop) {
-  reviewBackdrop.addEventListener("click", () => {
-    reviewModal.classList.remove("active");
-    reviewBackdrop.classList.remove("active");
-  });
-}
-
-if (reviewForm) {
-  reviewForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    reviewResult.style.display = "block";
-    // Optionally clear form
-    reviewForm.reset();
-    setTimeout(() => {
-      reviewModal.classList.remove("active");
-      reviewBackdrop.classList.remove("active");
-      reviewResult.style.display = "none";
-    }, 2000);
-  });
-}
-
-  </script>
 </body>
 </html>
