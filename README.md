@@ -1,244 +1,157 @@
-🛠️ IT Helpdesk – Wishlistz Support Tool
+# 🛠️ Wishlistz Support Dashboard  
 
-📌 Project Overview
-
-IT Helpdesk is a centralized support system designed as a help tool for the Wishlistz e-commerce platform.
-The application provides users with a single interface to raise support tickets, track orders, handle payment issues, access FAQs, give feedback, and view exclusive deals.
-
-This project was developed as part of an internship project to improve customer support efficiency and user experience for an e-commerce website.
-
+> 🚀 Internal IT Helpdesk & Support Management System  
 
 ---
 
-🎯 Purpose of the Project
+## 📌 Project Overview  
 
-The goal of this project is to:
+**Wishlistz Support Dashboard** is an internal support management system developed for the Wishlistz e-commerce platform.  
 
-Reduce dependency on manual customer support
+This dashboard is specifically designed for **Support Executives** to efficiently manage customer queries, tickets, orders, and payment-related issues from a centralized interface.  
 
-Provide faster issue resolution
-
-Centralize all support-related services
-
-Improve transparency in ticket and order status
-
-Enhance user engagement through deals and feedback
-
-
+It ensures smooth workflow handling, faster issue resolution, and structured support management within the organization.
 
 ---
 
-🧩 Key Features
+## 👋🏻 Welcome Screen  
 
-🏠 Main Dashboard
+Upon login, the system displays:  
 
-Wishlistz logo with redirect to the main website
+**"Welcome, Support Executive 👋🏻"**  
 
-Sidebar navigation with:
-
-Account Information
-
-Share App
-
-Rate Us
-
-About Wishlistz
-
-Logout option
-
-
-
+This confirms role-based access for internal support team members.
 
 ---
 
-👤 User Information (Home Footer Tab)
+## 🎯 Project Objectives  
 
-Logged-in user details
-
-User email display
-
-Instant enquiry/contact option
-
-
+- ⚡ Improve internal support workflow  
+- 🗂️ Centralize ticket and order management  
+- 📊 Improve tracking transparency  
+- ⏳ Reduce manual dependency  
+- 📈 Enhance operational efficiency  
 
 ---
 
-📦 Order Management
+## 🧩 Core Features  
 
-Order tracking
-
-Return request
-
-Refund status
-
-Report wrong or defective orders
-(All available through tab-based navigation)
-
-
+### 🏠 Executive Dashboard  
+- Clean and responsive UI  
+- Sidebar navigation panel  
+- Organized support modules  
+- Quick access to customer data  
 
 ---
 
-💳 Payment Support
-
-Payment history review
-
-Failed payment issues
-
-Payment status tracking
-
-
+### 🎫 Ticket Management System  
+- Raise internal IT tickets  
+- View ticket status  
+- Track customer issues  
+- Structured ticket workflow  
 
 ---
 
-🎫 IT Helpdesk & Tickets
-
-Raise IT or support tickets
-
-View ticket status
-
-Basic ticket tracking and analysis
-
-
+### 📦 Order Support Module  
+- Track customer orders  
+- Handle return requests  
+- Monitor refund status  
+- Report incorrect/defective orders  
 
 ---
 
-❓ FAQs & Resources
-
-Frequently Asked Questions
-
-Account help (forgot password, login issues)
-
-About Wishlistz
-
-Wishlistz co-partners information
-
-
+### 💳 Payment Issue Handling  
+- View payment history  
+- Track failed payments  
+- Monitor payment status  
 
 ---
 
-📅 Deals & Discounts Calendar
-
-Calendar view showing:
-
-Festive offers
-
-Flash sales
-
-Exclusive discount days
-
-
-
+### 👤 Customer Information Access  
+- View customer details  
+- Email information display  
+- Direct enquiry support  
 
 ---
 
-📝 Feedback & Reviews
-
-Submit feedback and reviews
-
-Improve service quality through user input
-
-
+### 📅 Deals & Offers Overview  
+- Festive sales  
+- Flash offers  
+- Promotional events calendar  
 
 ---
 
-📞 Direct Contact
-
-Support email
-
-Contact number
-
-Working hours information
-
-
+### ❓ FAQ & Knowledge Base  
+- Account recovery help  
+- Common issue solutions  
+- Company & partner information  
 
 ---
 
-🛠️ Technology Stack
+## 🛠️ Technology Stack  
 
-Layer	Technology
+| Layer | Technology |
+|--------|------------|
+| 🎨 Frontend | HTML5 |
+| 🎭 Styling | CSS3 (Custom UI Design) |
+| ⚙️ Interactivity | Vanilla JavaScript |
+| 🧱 Architecture | SPA-style interface |
 
-Frontend	HTML5, CSS3
-Interactivity	JavaScript (Vanilla JS)
-Styling	Custom CSS (Heavy UI Design)
-Architecture	Single Page Application (SPA-style)
-
-
-> ⚠️ Backend & database (Mongo DB) can be integrated in future versions.
-
-
-
+> ⚠️ Backend integration (MongoDB & authentication system) planned for future development.
 
 ---
 
-📁 Project Structure
+## 📁 Project Structure  
 
-IT-Helpdesk-Wishlistz/
+```
+Wishlistz-Support-Dashboard/
 │
-├── index.html     # Main UI & layout
-├── style.css      # Heavy CSS styling
-└── script.js      # JavaScript interactions
-
-
----
-
-🚀 How to Run the Project
-
-1. Download or clone the repository
-
-
-2. Open index.html in any modern web browser
-
-
-3. No server or installation required
-
-
-
+├── index.html     # Main Dashboard Layout
+├── style.css      # UI Styling
+└── script.js      # JavaScript Logic
+```
 
 ---
 
-🔮 Future Enhancements
+## 🚀 How to Run  
 
-MongoDB database integration
-
-User authentication & role management
-
-Admin dashboard for ticket management
-
-Real-time ticket status updates
-
-Email & notification system
-
-Analytics and reporting module
-
-
+1. Clone or download the repository  
+2. Open `index.html` in a modern browser  
+3. No installation required  
 
 ---
 
-🏢 Internship Relevance
+## 🔮 Future Enhancements  
 
-This project simulates a real-world internal support system used by e-commerce companies.
-It demonstrates:
-
-UI/UX design skills
-
-JavaScript-based interaction handling
-
-System design for customer support
-
-Understanding of business workflows in e-commerce
-
-
+- 🔐 Role-based authentication system  
+- 🗄️ MongoDB database integration  
+- 👨‍💼 Admin-level management panel  
+- 🔔 Real-time ticket updates  
+- 📊 Analytics dashboard  
+- 📩 Email notification system  
 
 ---
 
-📄 Project Name
+## 🏢 Internship Significance  
 
-IT Helpdesk – Wishlistz Support Tool
+This project represents a real-world internal support dashboard used in e-commerce operations.  
 
+It demonstrates:  
+
+- 🎨 UI/UX development skills  
+- ⚙️ JavaScript-based system interactions  
+- 🧠 Workflow-oriented system design  
+- 📊 Support management architecture  
 
 ---
 
-👨‍💻 Developed By
-Mohammed Siddibilal and Yohid Maniyar 
-Intern – Wishlistz
-Full Stack / Web🛠️ 
+## 👨‍💻 Contributors  
+
+- Mohammed Siddibilal  
+- Yohid Maniyar  
+- Advait Kulkarni  
+
+**Intern – Wishlistz**  
+Frontend / Full Stack Development  
+
+---
