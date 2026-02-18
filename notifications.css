@@ -1,0 +1,307 @@
+/* ===================== BODY ===================== */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #f5f7fa;
+  color: #2b2d42;
+}
+
+/* Avatar and minimized logo circles */
+.bot-avatar,
+.minimized-logo {
+  background: #fff;        /* white circle background */
+  border-radius: 50%;      /* perfect circle */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;        /* ensures image stays inside circle */
+}
+
+/* Logo image inside the circle */
+.bot-avatar img,
+.minimized-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;     /* keeps logo proportions */
+}
+
+/* Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6000;
+}
+
+/* Hidden state */
+.hidden {
+  display: none;
+}
+
+/* Popup box */
+.popup-box {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 320px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+.popup-box h2 {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.popup-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.popup-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.popup-btn.yes {
+  background: #ff4b2b;
+  color: #fff;
+}
+
+.popup-btn.no {
+  background: #ccc;
+  color: #333;
+}
+
+.popup-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===================== HEADER (same as calendar) ===================== */
+.calendar-header {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
+  padding: 25px 35px;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 25px rgba(255, 75, 43, 0.35);
+  text-align: center;
+}
+.calendar-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.calendar-header p {
+  font-size: 15px;
+  opacity: 0.9;
+  margin-top: 5px;
+}
+
+/* ===================== NOTIFICATIONS SECTION ===================== */
+.notifications-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.notification-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease-in-out;
+}
+.notification-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.15);
+  border: 1px solid #ff4b2b;
+}
+.notification-card h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+  color: #2b2d42;
+}
+.notification-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #555;
+}
+.notification-card .time {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* ===================== POPUPS ===================== */
+.popup-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 5999;
+}
+.popup-backdrop.active {
+  display: block;
+}
+
+.popup-modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 25px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  z-index: 6000;
+  display: none;
+}
+.popup-modal.active {
+  display: block;
+}
+
+.popup-modal h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #2b2d42;
+}
+.popup-modal ul {
+  list-style: none;
+  padding: 0;
+}
+.popup-modal ul li {
+  background: #f1f3f8;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.popup-modal ul li button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #ff4b2b;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.popup-modal ul li button:hover {
+  background: #e63e1f;
+}
+
+.popup-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.popup-modal input,
+.popup-modal textarea,
+.popup-modal select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.popup-modal button {
+  background: #ff4b2b;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.popup-modal button:hover {
+  background: #e63e1f;
+}
+
+.popup-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #ff4b2b;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.popup-close:hover {
+  color: #e63e1f;
+  transform: scale(1.1);
+}
+
+/* Assigned Tickets Table */
+.popup-modal table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.popup-modal table th,
+.popup-modal table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.popup-modal table th {
+  background: #f1f3f8;
+  font-weight: 600;
+}
+.popup-modal table button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #ff4b2b;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.popup-modal table button:hover {
+  background: #e63e1f;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .notifications-section {
+    grid-template-columns: 1fr;
+  }
+  .calendar-header {
+    text-align: center;
+    padding: 20px;
+  }
+  .popup-modal {
+    max-width: 90%;
+  }
+}
+@media (max-width: 600px) {
+  .popup-modal {
+    max-width: 95%;
+    padding: 20px;
+  }
+  .popup-modal table th,
+  .popup-modal table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+}
