@@ -67,7 +67,7 @@ form {
 }
 
 .form-group.full-width {
-  flex: 1 1 100%; /* for address or wide fields */
+  flex: 1 1 100%; /* for address field */
 }
 
 .form-group label {
@@ -79,10 +79,9 @@ form {
 }
 
 .form-group input,
-.form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 8px;
   border: 2px solid #bbb;
   outline: none;
@@ -93,47 +92,19 @@ form {
 }
 
 .form-group input:focus,
-.form-group select:focus,
 .form-group textarea:focus {
   border-color: #6C3BFF;
   box-shadow: 0 0 6px rgba(108,59,255,0.4);
 }
 
-/* Compact Address Field */
+/* Address Field */
 .form-group textarea {
   resize: vertical;
-  min-height: 40px; /* reduced height */
-  max-height: 40px;
-}
-
-#goToLogin {
-  background: #6C3BFF;
-  color: #fff;
-  font-weight: 700;
-}
-
-#goToLogin:hover {
-  background: #5a2fd1;
-}
-
-/* Eye Icon for Password */
-.toggle-password {
-  position: absolute;
-  right: 12px;
-  top: 34px;
-  cursor: pointer;
-  font-size: 16px;
-  color: #666;
-  transition: color 0.3s ease;
-}
-
-.toggle-password:hover {
-  color: #222;
+  min-height: 50px;
 }
 
 /* Buttons */
-.signin-btn,
-.register-btn {
+.signin-btn {
   display: inline-block;
   width: 100%;
   padding: 12px;
@@ -146,9 +117,6 @@ form {
   text-decoration: none;
   transition: all 0.3s ease;
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-.signin-btn {
   background: #6C3BFF;
   color: #fff;
 }
@@ -156,34 +124,6 @@ form {
 .signin-btn:hover {
   background: #5a2fd1;
   transform: translateY(-2px);
-}
-
-.register-btn {
-  background: #ff4b2b;
-  color: #fff;
-  text-align: center;
-}
-
-.register-btn:hover {
-  background: #e04326;
-  transform: translateY(-2px);
-}
-
-/* Links */
-.forgot-link {
-  margin-top: 10px;
-}
-
-.forgot-link a {
-  color: #6C3BFF;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.forgot-link a:hover {
-  color: #4a28b8;
 }
 
 /* Popup Overlay */
@@ -203,21 +143,6 @@ form {
 .hidden {
   display: none;
 }
-
-#goToLogin {
-  background: #6C3BFF;
-  color: #fff;
-  font-weight: 700;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-#goToLogin:hover {
-  background: #5a2fd1;
-}
-
 
 /* Popup Box */
 .popup-box {
@@ -244,46 +169,18 @@ form {
   color: #555;
 }
 
-.popup-box input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  margin-bottom: 12px;
-  font-size: 14px;
-}
-
-.popup-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
 .popup-btn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
+  background: #6C3BFF;
+  color: #fff;
   font-weight: 700;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.popup-btn {
-  background: #6C3BFF;
-  color: #fff;
-}
-
 .popup-btn:hover {
   background: #5a2fd1;
-}
-
-.popup-btn.cancel {
-  background: #ccc;
-  color: #333;
-}
-
-.popup-btn.cancel:hover {
-  background: #aaa;
 }
