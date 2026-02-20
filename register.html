@@ -16,29 +16,44 @@
   <!-- Register Form -->
   <div class="signin-container">
     <h2>Representative Registration</h2>
-    <form id="registerForm"  method="post">
-      
+    <form id="registerForm" method="post">
+
       <div class="form-group">
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" placeholder="Enter Full Name" required>
       </div>
 
       <div class="form-group">
-        <label for="birthdate">Birth Date</label>
-        <input type="date" id="birthdate" name="birthdate" required>
+        <label for="email">Email ID</label>
+        <input type="email" id="email" name="email" placeholder="Enter Email" required>
       </div>
 
       <div class="form-group">
-        <label for="gender">Gender</label>
-        <select id="gender" name="gender" required>
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter Password" required>
       </div>
 
       <div class="form-group">
+        <label for="role">Role</label>
+        <input type="text" id="role" name="role" placeholder="Enter Role" required>
+      </div>
+
+      <div class="form-group">
+        <label for="id">Employee ID</label>
+        <input type="text" id="id" name="id" placeholder="Enter Employee ID" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter Phone Number" required>
+      </div>
+
+      <div class="form-group">
+        <label for="shift">Shift</label>
+        <input type="text" id="shift" name="shift" placeholder="Enter Shift" required>
+      </div>
+
+      <div class="form-group full-width">
         <label for="address">Address</label>
         <textarea id="address" name="address" placeholder="Enter Address" rows="3" required></textarea>
       </div>
@@ -53,33 +68,20 @@
         <input type="text" id="state" name="state" placeholder="Enter State" required>
       </div>
 
-     
-
-      <div class="form-group">
-        <label for="workEmail">Email ID (Wishlistz)</label>
-        <input type="email" id="workEmail" name="workEmail" placeholder="Enter Wishlistz Work Email" required>
-      </div>
-
-      <div class="form-group">
-        <label for="employeeId">Employee ID</label>
-        <input type="text" id="employeeId" name="employeeId" placeholder="Enter Employee ID" required>
-      </div>
-
       <button type="submit" class="signin-btn">Register</button>
     </form>
   </div>
 
   <!-- Registration Success Popup -->
-<div id="registerSuccessPopup" class="popup-overlay hidden">
-  <div class="popup-box">
-    <h3>Registration Successful</h3>
-    <p>Your account has been created successfully.</p>
-    <button id="goToLogin" class="popup-btn">Log In</button>
+  <div id="registerSuccessPopup" class="popup-overlay hidden">
+    <div class="popup-box">
+      <h3>Registration Successful</h3>
+      <p>Your account has been created successfully.</p>
+      <button id="goToLogin" class="popup-btn">Log In</button>
+    </div>
   </div>
-</div>
 
   <script src="register.js"></script>
-    
 
 </body>
 </html>
