@@ -38,7 +38,7 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="assignedTicketsLink">📋 Assigned Tickets</a></li>
+      <li><a href="#" id="assignedLink">📋 Assigned Tickets</a></li>
       <li><a href="#" id="reportsLink">📊 Reports</a></li>
       <li><a href="#" id="emailSectionLink">📩 Email Customers</a></li>
       <li class="sidebar-item">
@@ -81,7 +81,7 @@
             </form>
           ">Create Ticket</li>
 
-          <li data-message="
+          <!-- <li data-message="
             <strong>Assign Ticket</strong><br>
             <form>
               <label>Ticket ID:</label>
@@ -95,7 +95,7 @@
               </select><br><br>
               <button>Assign Ticket</button>
             </form>
-          ">Assign Ticket</li>
+          ">Assign Ticket</li> -->
 
           <li data-message="
             <strong>Close Ticket</strong><br>
@@ -183,14 +183,9 @@
       <section class="services-section" id="history">
         <h2>History</h2>
         <ul>
-          <li data-message="
-            <strong>Past Tickets</strong><br>
-            <ul>
-              <li>Ticket #456: Damaged product → Replacement issued.</li>
-              <li>Ticket #789: Payment failure → Refund processed.</li>
-              <li>Ticket #812: Escalated → Resolved by Manager.</li>
-            </ul>
-          ">Past Tickets</li>
+          <<ul>
+    <li id="pastTicketsLink">Past Tickets</li>
+  </ul>
 
           <li data-message="
             <strong>Customer Timeline</strong><br>
@@ -332,19 +327,77 @@
       </div>
     </div>
 
+
+
     <!-- Sidebar Popups -->
-    <div id="assignedBackdrop" class="popup-backdrop"></div>
-    <div id="assignedModal" class="popup-modal">
-      <div class="popup-content">
-        <span id="assignedClose" class="popup-close">&times;</span>
-        <h3>Today's Assigned Tickets</h3>
-        <table>
-          <tr><th>ID</th><th>Issue</th><th>Action</th></tr>
-          <tr><td>#TCK201</td><td>Login issue</td><td><button>Resolve</button></td></tr>
-          <tr><td>#TCK202</td><td>Order delayed</td><td><button>Resolve</button></td></tr>
-        </table>
-      </div>
-    </div>
+<!-- Assigned Tickets Popup -->
+<div id="assignedBackdrop" class="popup-backdrop"></div>
+
+<div id="assignedModal" class="popup-modal">
+  <div class="popup-content">
+
+    <span id="assignedClose" class="popup-close">&times;</span>
+
+    <h3>📋 Assigned Tickets</h3>
+
+    <table class="assigned-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Send To</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Priority</th>
+          <th>Ticket ID</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+<tr>
+  <td>#ORD10234</td>
+  <td>orders@wishlistz.in</td>
+  <td>Delayed Delivery</td>
+  <td>Order not delivered after 5 days.</td>
+  <td>High</td>
+  <td>#TCK5671</td>
+  <td>
+    <select class="status-dropdown">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+  </td>
+  <td>
+    <button class="resolve-btn">Resolve</button>
+  </td>
+</tr>
+
+<tr>
+  <td>#ORD10278</td>
+  <td>payments@wishlistz.in</td>
+  <td>Payment Failure</td>
+  <td>Payment deducted but no confirmation.</td>
+  <td>Medium</td>
+  <td>#TCK5672</td>
+  <td>
+    <select class="status-dropdown">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+  </td>
+  <td>
+    <button class="resolve-btn">Resolve</button>
+  </td>
+</tr>
+
+</tbody>
+    </table>
+
+  </div>
+</div>
 
     <div id="reportsBackdrop" class="popup-backdrop"></div>
     <div id="reportsModal" class="popup-modal">
@@ -417,6 +470,70 @@
       <span class="icon">📅</span><p>Calendar</p>
     </a>
   </footer>
+
+  <!-- Past Tickets Popup -->
+<div id="pastBackdrop" class="popup-backdrop"></div>
+
+<div id="pastModal" class="popup-modal">
+  <div class="popup-content">
+
+    <span id="pastClose" class="popup-close">&times;</span>
+
+    <h3>📜 Past Tickets</h3>
+
+    <table class="assigned-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Send To</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Priority</th>
+          <th>Ticket ID</th>
+          <th>Status</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td>#ORD10234</td>
+  <td>orders@wishlistz.in</td>
+  <td>Delayed Delivery</td>
+  <td>Order not delivered after 5 days.</td>
+  <td>High</td>
+  <td>#TCK5671</td>
+  <td>
+    <select class="status-dropdown">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+  </td>
+  
+</tr>
+
+<tr>
+  <td>#ORD10278</td>
+  <td>payments@wishlistz.in</td>
+  <td>Payment Failure</td>
+  <td>Payment deducted but no confirmation.</td>
+  <td>Medium</td>
+  <td>#TCK5672</td>
+  <td>
+    <select class="status-dropdown">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+  </td>
+  
+</tr>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
 
     <!-- ================= CHATBOT ================= -->
 <div id="chatbot-container">
