@@ -65,6 +65,25 @@ setupPopup(assignedLink, assignedBackdrop, closeAssigned);
 setupPopup(reportsLink, reportsBackdrop, closeReports);
 setupPopup(emailLink, emailBackdrop, closeEmail);
 
+// ================== ASSIGNED TICKETS TABLE ACTIONS ==================
+const assignedTable = document.querySelector(".assigned-table");
+
+if (assignedTable) {
+  assignedTable.addEventListener("click", (e) => {
+    if (e.target.classList.contains("resolve-btn")) {
+      const row = e.target.closest("tr");
+      const statusDropdown = row.querySelector(".status-dropdown");
+      if (statusDropdown) {
+        statusDropdown.value = "Resolved"; // set dropdown to Resolved
+        statusDropdown.style.color = "#2ecc71"; // optional: green text
+      }
+      e.target.disabled = true;
+      e.target.textContent = "Done";
+    }
+  });
+}
+
+
 // ================== REPORT DOWNLOAD BUTTONS ==================
 document.querySelectorAll(".download-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -129,7 +148,7 @@ Subject: ${subject}`);
   });
 }
 
-// Elements
+// ================== SIGN OUT POPUP ==================
 const signoutLink = document.getElementById("signoutLink");
 const signoutPopup = document.getElementById("signoutPopup");
 const confirmSignout = document.getElementById("confirmSignout");
@@ -148,6 +167,5 @@ cancelSignout.addEventListener("click", () => {
 
 // Redirect if "Yes" clicked
 confirmSignout.addEventListener("click", () => {
-  window.location.href = "signout.html"; // placeholder redirect
+  window.location.href = "login.html"; // placeholder redirect
 });
-
