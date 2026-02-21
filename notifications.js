@@ -27,24 +27,42 @@ notificationCards.forEach(card => {
 // ===================== POPUP LOGIC (s1 enabled) =====================
 
 // Assigned Tickets Popup
-const assignedLink = document.getElementById("assignedTicketsLink");
-const assignedModal = document.getElementById("assignedModal");
+const assignedLink = document.getElementById("assignedLink");
 const assignedBackdrop = document.getElementById("assignedBackdrop");
-const assignedClose = document.getElementById("assignedClose");
+const closeAssigned = document.getElementById("closeAssigned");
 
-assignedLink.addEventListener("click", (e) => {
-  e.preventDefault();
-  assignedModal.classList.add("active");
-  assignedBackdrop.classList.add("active");
-});
-assignedClose.addEventListener("click", () => {
-  assignedModal.classList.remove("active");
-  assignedBackdrop.classList.remove("active");
-});
-assignedBackdrop.addEventListener("click", () => {
-  assignedModal.classList.remove("active");
-  assignedBackdrop.classList.remove("active");
-});
+if (assignedLink && assignedBackdrop && closeAssigned) {
+  assignedLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    assignedBackdrop.style.display = "flex";
+  });
+  closeAssigned.addEventListener("click", () => {
+    assignedBackdrop.style.display = "none";
+  });
+  assignedBackdrop.addEventListener("click", (e) => {
+    if (e.target === assignedBackdrop) {
+      assignedBackdrop.style.display = "none";
+    }
+  });
+}
+
+// Resolve button logic
+const assignedTable = document.querySelector(".assigned-table");
+if (assignedTable) {
+  assignedTable.addEventListener("click", (e) => {
+    if (e.target.classList.contains("resolve-btn")) {
+      const row = e.target.closest("tr");
+      const statusDropdown = row.querySelector(".status-dropdown");
+      if (statusDropdown) {
+        statusDropdown.value = "Resolved";
+        statusDropdown.style.color = "#2ecc71";
+      }
+      e.target.disabled = true;
+      e.target.textContent = "Done";
+    }
+  });
+}
+
 
 // Reports Popup
 const reportsLink = document.getElementById("reportsLink");
@@ -125,5 +143,5 @@ cancelSignout.addEventListener("click", () => {
 
 // Redirect if "Yes" clicked
 confirmSignout.addEventListener("click", () => {
-  window.location.href = "signout.html"; // placeholder redirect
+  window.location.href = "login.html"; // placeholder redirect
 });
