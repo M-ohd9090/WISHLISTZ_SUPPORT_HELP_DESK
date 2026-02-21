@@ -32,7 +32,7 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="assignedTicketsLink">📋 Assigned Tickets</a></li>
+      <li><a href="#" id="assignedLink">📋 Assigned Tickets</a></li>
       <li><a href="#" id="reportsLink">📊 Reports</a></li>
       <li><a href="#" id="emailSectionLink">📩 Email Customers</a></li>
       <li class="sidebar-item">
@@ -171,18 +171,73 @@
   </main>
 
   <!-- POPUPS -->
-  <!-- Assigned Tickets -->
-  <div class="popup-modal" id="assignedBackdrop">
-    <div class="popup-content" id="assignedModal">
-      <span class="popup-close" id="assignedClose">&times;</span>
-      <h3>📋 Assigned Tickets</h3>
-      <table>
-        <tr><th>ID</th><th>Issue</th><th>Action</th></tr>
-        <tr><td>#TCK201</td><td>Login issue</td><td><button class="orange-btn">Resolve</button></td></tr>
-        <tr><td>#TCK202</td><td>Order delayed</td><td><button class="orange-btn">Resolve</button></td></tr>
-      </table>
-    </div>
+<div id="assignedBackdrop" class="popup-backdrop"></div>
+
+<div id="assignedModal" class="popup-modal">
+  <div class="popup-content">
+
+    <span id="assignedClose" class="popup-close">&times;</span>
+
+    <h3>📋 Assigned Tickets</h3>
+
+    <table class="assigned-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Send To</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Priority</th>
+          <th>Ticket ID</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+<tr>
+  <td>#ORD10234</td>
+  <td>orders@wishlistz.in</td>
+  <td>Delayed Delivery</td>
+  <td>Order not delivered after 5 days.</td>
+  <td>High</td>
+  <td>#TCK5671</td>
+  <td>
+    <select class="status-dropdown">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+  </td>
+  <td>
+    <button class="resolve-btn">Resolve</button>
+  </td>
+</tr>
+
+<tr>
+  <td>#ORD10278</td>
+  <td>payments@wishlistz.in</td>
+  <td>Payment Failure</td>
+  <td>Payment deducted but no confirmation.</td>
+  <td>Medium</td>
+  <td>#TCK5672</td>
+  <td>
+    <select class="status-dropdown">
+      <option>Pending</option>
+      <option>In Progress</option>
+      <option>Resolved</option>
+    </select>
+  </td>
+  <td>
+    <button class="resolve-btn">Resolve</button>
+  </td>
+</tr>
+
+</tbody>
+    </table>
+
   </div>
+</div>
 
   <!-- Reports -->
   <div class="popup-modal" id="reportsBackdrop">
