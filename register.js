@@ -3,7 +3,7 @@ const registerForm = document.getElementById("registerForm");
 const registerSuccessPopup = document.getElementById("registerSuccessPopup");
 const goToLogin = document.getElementById("goToLogin");
 
-registerForm.addEventListener("submit", (e) => {
+registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   // Collect values
@@ -19,35 +19,72 @@ registerForm.addEventListener("submit", (e) => {
   const state = document.getElementById("state").value.trim();
 
   // Basic validation
-  if (!name || !email || !password || !role || !id || !phone || !shift || !address || !city || !state) {
+  if (
+    !name ||
+    !email ||
+    !password ||
+    !role ||
+    !id ||
+    !phone ||
+    !shift ||
+    !address ||
+    !city ||
+    !state
+  ) {
     alert("Please fill in all required fields.");
     return;
   }
 
-  // Email validation
   if (!email.includes("@")) {
     alert("Please enter a valid email address.");
     return;
   }
 
-  // Password validation (minimum 6 characters)
   if (password.length < 6) {
     alert("Password must be at least 6 characters long.");
     return;
   }
 
-  // Phone validation (basic numeric check)
   const phonePattern = /^[0-9]{10}$/;
   if (!phonePattern.test(phone)) {
     alert("Please enter a valid 10-digit phone number.");
     return;
   }
 
-  // Success → show popup
-  registerSuccessPopup.classList.remove("hidden");
+  try {
+    const response = await fetch("http://localhost:8000/api/user/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        role,
+        id,
+        phone,
+        shift,
+        address,
+        city,
+        state,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      registerSuccessPopup.classList.remove("hidden");
+    } else {
+      alert(data.message || "Registration failed");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error. Please try again later.");
+  }
 });
 
-// Redirect to login page when button clicked
+// Redirect to login page
 goToLogin.addEventListener("click", () => {
   window.location.href = "login.html";
 });

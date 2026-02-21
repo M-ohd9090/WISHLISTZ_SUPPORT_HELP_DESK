@@ -366,6 +366,25 @@ main:not(.sidebar-open) { margin-left: 0; }
 }
 .popup-modal button[type="submit"]:hover {
   background: #e63e1f;
+
+}
+/* Widen Status Column */
+.popup-modal table th:nth-child(7),
+.popup-modal table td:nth-child(7) {
+  width: 160px;
+  text-align: center;
+}
+.status-select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+}
+
+.status-resolved {
+  color: #1a7f37;
+  font-weight: 600;
+
 }
 /* Widen Status Column */
 .popup-modal table th:nth-child(7),
