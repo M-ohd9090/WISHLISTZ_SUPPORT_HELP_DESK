@@ -11,7 +11,6 @@
   <!-- Orders Page Styles -->
   <link rel="stylesheet" href="orders.css">
   <link rel="stylesheet" href="styleBot.css">
-
 </head>
 
 <body>
@@ -32,13 +31,12 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="assignedTicketsLink">📋 Assigned Tickets</a></li>
+      <li><a href="#" id="assignedLink">📋 Assigned Tickets</a></li>
       <li><a href="#" id="reportsLink">📊 Reports</a></li>
       <li><a href="#" id="emailSectionLink">📩 Email Customers</a></li>
       <li class="sidebar-item">
-  <a href="#" id="signoutLink" class="sidebar-link">Sign Out</a>
-</li>
-
+        <a href="#" id="signoutLink" class="sidebar-link">Sign Out</a>
+      </li>
     </ul>
   </aside>
 
@@ -67,6 +65,7 @@
         class="order-search-input"
       >
     </section>
+
     <!-- ===================== ORDERS GRID ===================== -->
     <section class="orders-section orders-grid">
 
@@ -155,16 +154,84 @@
   <!-- ===================== POPUPS (s1 enabled) ===================== -->
 
   <!-- Assigned Tickets Popup -->
-  <div class="popup-backdrop" id="assignedBackdrop"></div>
-  <div class="popup-modal" id="assignedModal">
-    <span class="popup-close" id="assignedClose">&times;</span>
-    <h3>Today's Assigned Tickets</h3>
-    <table>
-      <tr><th>ID</th><th>Issue</th><th>Action</th></tr>
-      <tr><td>#TCK201</td><td>Login issue</td><td><button>Resolve</button></td></tr>
-      <tr><td>#TCK202</td><td>Order delayed</td><td><button>Resolve</button></td></tr>
-    </table>
-  </div>
+<div class="popup-backdrop" id="assignedBackdrop"></div>
+<div class="popup-modal" id="assignedModal">
+  <span class="popup-close" id="assignedClose">&times;</span>
+  <h3>📋 Assigned Tickets</h3>
+
+  <table class="assigned-table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Send To</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Priority</th>
+        <th>Ticket ID</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>#1023</td>
+        <td>john.doe@example.com</td>
+        <td>Refund Follow-up</td>
+        <td>Customer requested refund update</td>
+        <td>Medium</td>
+        <td>TCK-201</td>
+        <td>
+          <select class="status-dropdown">
+            <option selected>Open</option>
+            <option>Pending</option>
+            <option>Closed</option>
+            <option>Resolved</option>
+          </select>
+        </td>
+        <td><button class="resolve-btn">Resolve</button></td>
+      </tr>
+      <tr>
+        <td>#1045</td>
+        <td>priya.sharma@example.com</td>
+        <td>Replacement Request</td>
+        <td>Damaged product replacement</td>
+        <td>High</td>
+        <td>TCK-202</td>
+        <td>
+          <select class="status-dropdown">
+            <option selected>Open</option>
+            <option>Pending</option>
+            <option>Closed</option>
+            <option>Resolved</option>
+          </select>
+        </td>
+        <td><button class="resolve-btn">Resolve</button></td>
+      </tr>
+      <tr>
+        <td>#1078</td>
+        <td>rahul.patil@example.com</td>
+        <td>Delivery Delay</td>
+        <td>Order delayed due to logistics</td>
+        <td>Low</td>
+        <td>TCK-203</td>
+        <td>
+          <select class="status-dropdown">
+            <option selected>Open</option>
+            <option>Pending</option>
+            <option>Closed</option>
+            <option>Resolved</option>
+          </select>
+        </td>
+        <td><button class="resolve-btn">Resolve</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+    <button id="closeAssigned">Close</button>
+  
+</div>
 
   <!-- Reports Popup -->
   <div class="popup-backdrop" id="reportsBackdrop"></div>
@@ -313,7 +380,7 @@
     }
   }
 
-  setupPopup("assignedTicketsLink", "assignedBackdrop", "assignedModal", "assignedClose");
+  setupPopup("assignedLink", "assignedBackdrop", "assignedModal", "assignedClose");
   setupPopup("reportsLink", "reportsBackdrop", "reportsModal", "reportsClose");
   setupPopup("emailSectionLink", "emailBackdrop", "emailModal", "emailClose");
 
@@ -350,10 +417,40 @@ cancelSignout.addEventListener("click", () => {
 
 // Redirect if "Yes" clicked
 confirmSignout.addEventListener("click", () => {
-  window.location.href = "signout.html"; // placeholder redirect
+  window.location.href = "login.html"; // placeholder redirect
 });
 
 
+// ================== ASSIGNED TICKETS TABLE ACTIONS ==================
+const assignedTable = document.querySelector(".assigned-table");
+
+if (assignedTable) {
+  assignedTable.addEventListener("click", (e) => {
+    if (e.target.classList.contains("resolve-btn")) {
+      const row = e.target.closest("tr");
+      const statusDropdown = row.querySelector(".status-dropdown");
+
+      if (statusDropdown) {
+        statusDropdown.value = "Resolved";
+        statusDropdown.classList.add("status-resolved");
+      }
+
+      e.target.disabled = true;
+      e.target.textContent = "Done";
+    }
+  });
+}
+
+// Change color when manually changed
+document.addEventListener("change", function(e) {
+  if (e.target.classList.contains("status-dropdown")) {
+    if (e.target.value === "Resolved") {
+      e.target.classList.add("status-resolved");
+    } else {
+      e.target.classList.remove("status-resolved");
+    }
+  }
+});
   </script>
   <script src="appBot.js"></script>
 
