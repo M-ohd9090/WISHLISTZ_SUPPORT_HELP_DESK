@@ -32,7 +32,7 @@
     <hr class="sidebar-divider">
 
     <ul class="sidebar-menu">
-      <li><a href="#" id="assignedTicketsLink">📋 Assigned Tickets</a></li>
+      <li><a href="#" id="assignedLink">📋 Assigned Tickets</a></li>
       <li><a href="#" id="reportsLink">📊 Reports</a></li>
       <li><a href="#" id="emailSectionLink">📩 Email Customers</a></li>
       <li class="sidebar-item">
@@ -113,19 +113,50 @@
     </footer>
   </main>
 
-  <!-- ===================== POPUPS (s1 enabled) ===================== -->
+  <!-- ================= ASSIGNED TICKETS POPUP ================= -->
+<div id="assignedBackdrop" class="popup-backdrop" style="display:none;">
+  <div class="popup">
+    <h2>📋 Assigned Tickets</h2>
 
-  <!-- Assigned Tickets Popup -->
-  <div class="popup-backdrop" id="assignedBackdrop"></div>
-  <div class="popup-modal" id="assignedModal">
-    <span class="popup-close" id="assignedClose">&times;</span>
-    <h3>Today's Assigned Tickets</h3>
-    <table>
-      <tr><th>ID</th><th>Issue</th><th>Action</th></tr>
-      <tr><td>#TCK201</td><td>Login issue</td><td><button>Resolve</button></td></tr>
-      <tr><td>#TCK202</td><td>Order delayed</td><td><button>Resolve</button></td></tr>
+    <table class="assigned-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Send To</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Priority</th>
+          <th>Ticket ID</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#1023</td>
+          <td>john.doe@example.com</td>
+          <td>Refund Follow-up</td>
+          <td>Customer requested refund update</td>
+          <td>Medium</td>
+          <td>TCK-201</td>
+          <td>
+            <select class="status-dropdown">
+              <option value="Open" selected>Open</option>
+              <option value="Pending">Pending</option>
+              <option value="Closed">Closed</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </td>
+          <td><button class="resolve-btn">Resolve</button></td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
     </table>
+
+    <button id="closeAssigned">Close</button>
   </div>
+</div>
+
 
   <!-- Reports Popup -->
   <div class="popup-backdrop" id="reportsBackdrop"></div>
