@@ -242,7 +242,7 @@ main:not(.sidebar-open) { margin-left: 0; }
   background: #fff;
   padding: 25px;
   border-radius: 14px;
-  max-width: 650px;
+  max-width: 920px;
   width: 90%;
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
   position: relative;
@@ -381,4 +381,23 @@ main:not(.sidebar-open) { margin-left: 0; }
   .footer-bar { gap: 1.2cm; padding: 6px 15px; }
   .footer-bar .footer-icon .icon { font-size: 20px; }
   .footer-bar .footer-icon p { font-size: 11px; }
+}
+
+.assigned-table th:nth-child(7),
+.assigned-table td:nth-child(7) {
+  width: 180px;        /* increase width */
+}
+
+.assigned-table td:nth-child(7) select {
+  width: 100%;
+  white-space: normal; /* allow wrapping */
+}
+/* Optional: allow table to adjust properly */
+.assigned-table {
+  table-layout: auto;
+}
+/* Resolved color */
+.status-resolved {
+  color: #1a7f37;
+  font-weight: 600;
 }
