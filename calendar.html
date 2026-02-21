@@ -112,55 +112,99 @@
   </main>
 
 
-  <!-- ================= ASSIGNED TASKS POPUP ================= -->
-  <div id="assignedBackdrop" class="popup-backdrop" style="display:none;">
-    <div class="popup">
-      <h2>📋 Assigned Tasks</h2>
+  <!-- ================= ASSIGNED TICKETS POPUP ================= -->
+<div id="assignedBackdrop" class="popup-backdrop" style="display:none;">
+  <div class="popup">
+    <h2>📋 Assigned Tickets</h2>
 
-      <ul class="assigned-list">
-        <li>
-          <span>Ticket #1023 – Refund follow-up</span>
-          <button class="resolve-btn">Resolve</button>
-        </li>
-        <li>
-          <span>Ticket #1045 – Replace damaged product</span>
-          <button class="resolve-btn">Resolve</button>
-        </li>
-        <li>
-          <span>Ticket #1078 – Delivery delay</span>
-          <button class="resolve-btn">Resolve</button>
-        </li>
-        <li>
-          <span>Ticket #1102 – Payment failed issue</span>
-          <button class="resolve-btn">Resolve</button>
-        </li>
-        <li>
-          <span>Ticket #1120 – Account login complaint</span>
-          <button class="resolve-btn">Resolve</button>
-        </li>
-      </ul>
+    <table class="assigned-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Send To</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Priority</th>
+          <th>Ticket ID</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td>#1023</td>
+  <td>john.doe@example.com</td>
+  <td>Refund Follow-up</td>
+  <td>Customer requested refund update</td>
+  <td>Medium</td>
+  <td>TCK-201</td>
+  <td>
+    <select class="status-dropdown">
+      <option value="Open" selected>Open</option>
+      <option value="Pending">Pending</option>
+      <option value="Closed">Closed</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+  </td>
+  <td><button class="resolve-btn">Resolve</button></td>
+</tr>
 
-      <button id="closeAssigned">Close</button>
-    </div>
+        <tr>
+          <td>#1045</td>
+          <td>priya.sharma@example.com</td>
+          <td>Replacement Request</td>
+          <td>Damaged product replacement</td>
+          <td>High</td>
+          <td>TCK-202</td>
+          <td>
+    <select class="status-dropdown">
+      <option value="Open" selected>Open</option>
+      <option value="Pending">Pending</option>
+      <option value="Closed">Closed</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+  </td>
+          <td><button class="resolve-btn">Resolve</button></td>
+        </tr>
+        <tr>
+          <td>#1078</td>
+          <td>rahul.patil@example.com</td>
+          <td>Delivery Delay</td>
+          <td>Order delayed due to logistics</td>
+          <td>Low</td>
+          <td>TCK-203</td>
+          <td>
+    <select class="status-dropdown">
+      <option value="Open" selected>Open</option>
+      <option value="Pending">Pending</option>
+      <option value="Closed">Closed</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+  </td>
+          <td><button class="resolve-btn">Resolve</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button id="closeAssigned">Close</button>
   </div>
+</div>
 
-
-  <!-- ================= REPORTS POPUP ================= -->
-  <div id="reportsBackdrop" class="popup-backdrop" style="display:none;">
-    <div class="popup">
-      <h2>📊 Weekly Reports</h2>
-
-      <ul class="reports-list">
-        <li>Week 1: Jan 5 – Jan 11 <button class="download-btn" data-week="1">Download</button></li>
-        <li>Week 2: Jan 12 – Jan 18 <button class="download-btn" data-week="2">Download</button></li>
-        <li>Week 3: Jan 19 – Jan 25 <button class="download-btn" data-week="3">Download</button></li>
-        <li>Week 4: Jan 26 – Feb 1 <button class="download-btn" data-week="4">Download</button></li>
-        <li>Week 5: Feb 2 – Feb 8 <button class="download-btn" data-week="5">Download</button></li>
-      </ul>
-
-      <button id="closeReports">Close</button>
-    </div>
+<!-- ================= REPORTS POPUP ================= -->
+<div id="reportsBackdrop" class="popup-backdrop" style="display:none;">
+  <div class="popup">
+    <h2>📊 Weekly Reports</h2>
+    <ul class="reports-list">
+      <li>Week 1: Jan 5 – Jan 11 <button class="download-btn" data-week="1">Download</button></li>
+      <li>Week 2: Jan 12 – Jan 18 <button class="download-btn" data-week="2">Download</button></li>
+      <li>Week 3: Jan 19 – Jan 25 <button class="download-btn" data-week="3">Download</button></li>
+      <li>Week 4: Jan 26 – Feb 1 <button class="download-btn" data-week="4">Download</button></li>
+      <li>Week 5: Feb 2 – Feb 8 <button class="download-btn" data-week="5">Download</button></li>
+    </ul>
+    <button id="closeReports">Close</button>
   </div>
+</div>
+
 
   <!-- ================= EMAIL POPUP ================= -->
   <div id="emailBackdrop" class="popup-backdrop" style="display:none;">
