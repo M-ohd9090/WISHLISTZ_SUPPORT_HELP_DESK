@@ -6,151 +6,143 @@ const popupTitle = document.getElementById("popupTitle");
 const popupMessage = document.getElementById("popupMessage");
 const popupClose = document.getElementById("popupClose");
 
-// Function to open popup with dynamic content
+// ===================== MAIN POPUP =====================
+
 function openPopup(title, message) {
+  if (!popupModal) return;
+
   popupTitle.textContent = title;
-  popupMessage.innerHTML = message; // allow HTML (forms, dropdowns, FAQs, etc.)
+  popupMessage.innerHTML = message;
   popupModal.classList.add("active");
-  document.body.style.overflow = "hidden"; // prevent background scroll
+  document.body.style.overflow = "hidden";
 }
 
-// Function to close popup
 function closePopup() {
+  if (!popupModal) return;
+
   popupModal.classList.remove("active");
-  document.body.style.overflow = ""; // restore scroll
+  document.body.style.overflow = "";
 }
 
-// Close popup when clicking the close button
 if (popupClose) {
   popupClose.addEventListener("click", closePopup);
 }
 
-// Close popup when clicking outside the content
-popupModal.addEventListener("click", (e) => {
-  if (e.target === popupModal) {
-    closePopup();
-  }
-});
+if (popupModal) {
+  popupModal.addEventListener("click", (e) => {
+    if (e.target === popupModal) closePopup();
+  });
+}
 
 // ===================== SECTION INTERACTIONS =====================
+
 document.querySelectorAll(".services-section ul li").forEach(item => {
   item.addEventListener("click", () => {
-    const sectionTitle = item.closest(".services-section").querySelector("h2").textContent;
-    const message = item.getAttribute("data-message") || `You selected "${item.textContent}" under ${sectionTitle}.`;
+
+    // 🚫 Ignore custom modal links
+    if (
+      item.id === "pastTicketsLink" ||
+      item.id === "assignedLink" ||
+      item.id === "reportsLink" ||
+      item.id === "emailSectionLink"
+    ) return;
+
+    const sectionTitle =
+      item.closest(".services-section").querySelector("h2").textContent;
+
+    const message =
+      item.getAttribute("data-message") ||
+      `You selected "${item.textContent}" under ${sectionTitle}.`;
+
     openPopup(sectionTitle, message);
   });
 });
 
-// ===================== OPTIONAL: Expand/Collapse Sections =====================
+// Expand/Collapse
 document.querySelectorAll(".services-section h2").forEach(header => {
   header.addEventListener("dblclick", () => {
     const list = header.nextElementSibling;
-    list.style.display = (list.style.display === "none") ? "block" : "none";
+    list.style.display =
+      list.style.display === "none" ? "block" : "none";
   });
 });
 
-// ===================== FORM & BUTTON ACTIONS =====================
-popupMessage.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    const action = e.target.textContent.trim();
+// ===================== BUTTON ACTIONS =====================
 
-    switch(action) {
-      case "Create Ticket":
-        alert("Ticket created successfully with provided details!");
-        break;
-      case "Assign Ticket":
-        alert("Ticket assigned to selected agent.");
-        break;
-      case "Close Ticket":
-        alert("Ticket closed with resolution note.");
-        break;
-      case "Watch: Resolving Payment Issues":
-        alert("Launching tutorial: Resolving Payment Issues...");
-        break;
-      case "Watch: Handling Returns":
-        alert("Launching tutorial: Handling Returns...");
-        break;
-      case "Watch: Escalation Workflow":
-        alert("Launching tutorial: Escalation Workflow...");
-        break;
-      case "Open: Return Process Guide":
-        alert("Opening Return Process Guide...");
-        break;
-      case "Open: Payment Troubleshooting Guide":
-        alert("Opening Payment Troubleshooting Guide...");
-        break;
-      case "Open: Escalation Workflow Guide":
-        alert("Opening Escalation Workflow Guide...");
-        break;
-      case "Open: API Integration Guide":
-        alert("Opening API Integration Guide...");
-        break;
-      case "Start Chat":
-        alert("Internal chat started with selected team.");
-        break;
-      case "Save Note":
-        alert("Internal note saved for ticket.");
-        break;
-      case "Escalate":
-        alert("Ticket escalated to selected authority.");
-        break;
-      case "Send Email":
-        alert("Email sent successfully to customer.");
-        break;
-      case "Download":
-        alert("Report downloaded.");
-        break;
-      case "Resolve":
-        alert("Ticket marked as resolved.");
-        break;
-      default:
-        alert(`Action triggered: ${action}`);
+if (popupMessage) {
+  popupMessage.addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      alert(`Action triggered: ${e.target.textContent.trim()}`);
     }
-  }
-});
+  });
 
-// Handle form submissions inside popup
-popupMessage.addEventListener("submit", (e) => {
-  e.preventDefault();
-  alert("Form submitted successfully!");
-});
+  popupMessage.addEventListener("submit", (e) => {
+    e.preventDefault();
+    alert("Form submitted successfully!");
+  });
+}
 
 // ===================== SIDEBAR POPUPS =====================
+
 function setupSidebarPopup(linkId, modalId, backdropId, closeId) {
   const link = document.getElementById(linkId);
   const modal = document.getElementById(modalId);
   const backdrop = document.getElementById(backdropId);
   const closeBtn = document.getElementById(closeId);
 
-  if (link) {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      modal.classList.add("active");
-      backdrop.classList.add("active");
-      document.body.style.overflow = "hidden";
-    });
+  if (!link || !modal || !backdrop) return;
+
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    modal.classList.add("active");
+    backdrop.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+
+  function closeModal() {
+    modal.classList.remove("active");
+    backdrop.classList.remove("active");
+    document.body.style.overflow = "";
   }
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      modal.classList.remove("active");
-      backdrop.classList.remove("active");
-      document.body.style.overflow = "";
-    });
-  }
-  if (backdrop) {
-    backdrop.addEventListener("click", () => {
-      modal.classList.remove("active");
-      backdrop.classList.remove("active");
-      document.body.style.overflow = "";
-    });
-  }
+
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", closeModal);
 }
 
-setupSidebarPopup("assignedTicketsLink", "assignedModal", "assignedBackdrop", "assignedClose");
-setupSidebarPopup("reportsLink", "reportsModal", "reportsBackdrop", "reportsClose");
-setupSidebarPopup("emailSectionLink", "emailModal", "emailBackdrop", "emailClose");
+// Assigned
+setupSidebarPopup(
+  "assignedLink",
+  "assignedModal",
+  "assignedBackdrop",
+  "assignedClose"
+);
 
-// ===================== HAMBURGER FUNCTIONALITY =====================
+// Past Tickets
+setupSidebarPopup(
+  "pastTicketsLink",
+  "pastModal",
+  "pastBackdrop",
+  "pastClose"
+);
+
+// Reports
+setupSidebarPopup(
+  "reportsLink",
+  "reportsModal",
+  "reportsBackdrop",
+  "reportsClose"
+);
+
+// Email
+setupSidebarPopup(
+  "emailSectionLink",
+  "emailModal",
+  "emailBackdrop",
+  "emailClose"
+);
+
+// ===================== HAMBURGER =====================
+
 const hamburger = document.querySelector(".hamburger");
 const sidebar = document.querySelector(".sidebar");
 const mainContent = document.querySelector("main");
@@ -163,24 +155,60 @@ if (hamburger) {
   });
 }
 
-// Elements
+// ===================== SIGNOUT =====================
+
 const signoutLink = document.getElementById("signoutLink");
 const signoutPopup = document.getElementById("signoutPopup");
 const confirmSignout = document.getElementById("confirmSignout");
 const cancelSignout = document.getElementById("cancelSignout");
 
-// Show popup when clicking sidebar Sign Out
-signoutLink.addEventListener("click", (e) => {
-  e.preventDefault(); // prevent direct navigation
-  signoutPopup.classList.remove("hidden");
-});
+if (signoutLink && signoutPopup) {
+  signoutLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    signoutPopup.classList.remove("hidden");
+  });
+}
 
-// Hide popup if "No" clicked
-cancelSignout.addEventListener("click", () => {
-  signoutPopup.classList.add("hidden");
-});
+if (cancelSignout) {
+  cancelSignout.addEventListener("click", () => {
+    signoutPopup.classList.add("hidden");
+  });
+}
 
-// Redirect if "Yes" clicked
-confirmSignout.addEventListener("click", () => {
-  window.location.href = "signout.html"; // placeholder redirect
+if (confirmSignout) {
+  confirmSignout.addEventListener("click", () => {
+    window.location.href = "login.html";
+  });
+}
+
+// ================== ASSIGNED TICKETS TABLE ==================
+
+const assignedTable = document.querySelector(".assigned-table");
+
+if (assignedTable) {
+  assignedTable.addEventListener("click", (e) => {
+    if (e.target.classList.contains("resolve-btn")) {
+      const row = e.target.closest("tr");
+      const statusDropdown = row.querySelector(".status-dropdown");
+
+      if (statusDropdown) {
+        statusDropdown.value = "Resolved";
+        statusDropdown.classList.add("status-resolved");
+      }
+
+      e.target.disabled = true;
+      e.target.textContent = "Done";
+    }
+  });
+}
+
+// Status color change
+document.addEventListener("change", function (e) {
+  if (e.target.classList.contains("status-dropdown")) {
+    if (e.target.value === "Resolved") {
+      e.target.classList.add("status-resolved");
+    } else {
+      e.target.classList.remove("status-resolved");
+    }
+  }
 });
