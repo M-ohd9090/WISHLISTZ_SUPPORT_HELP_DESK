@@ -13,19 +13,24 @@ if (hamburgerBtn && sidebarEl && mainEl) {
 
 
 // ===================== POPUP SYSTEM =====================
+
 function openPopup(modalId, backdropId) {
   const modal = document.getElementById(modalId);
   const backdrop = document.getElementById(backdropId);
 
   if (modal && backdrop) {
+    modal.classList.add("active");
     backdrop.classList.add("active");
     document.body.style.overflow = "hidden";
   }
 }
 
-function closePopup(backdropId) {
+function closePopup(modalId, backdropId) {
+  const modal = document.getElementById(modalId);
   const backdrop = document.getElementById(backdropId);
-  if (backdrop) {
+
+  if (modal && backdrop) {
+    modal.classList.remove("active");
     backdrop.classList.remove("active");
     document.body.style.overflow = "";
   }
@@ -36,7 +41,6 @@ function setupPopup(linkId, modalId, backdropId, closeId) {
   const closeBtn = document.getElementById(closeId);
   const backdrop = document.getElementById(backdropId);
 
-  // Open from sidebar
   if (link) {
     link.addEventListener("click", (e) => {
       e.preventDefault();
@@ -44,69 +48,53 @@ function setupPopup(linkId, modalId, backdropId, closeId) {
     });
   }
 
-  // Close button
   if (closeBtn) {
     closeBtn.addEventListener("click", () => {
-      closePopup(backdropId);
+      closePopup(modalId, backdropId);
     });
   }
 
-  // Click outside modal closes
   if (backdrop) {
     backdrop.addEventListener("click", (e) => {
       if (e.target === backdrop) {
-        closePopup(backdropId);
+        closePopup(modalId, backdropId);
       }
     });
   }
 }
 
 
-// ===================== SIDEBAR POPUPS =====================
-setupPopup("assignedTicketsLink", "assignedModal", "assignedBackdrop", "assignedClose");
+// ===================== CONNECT SIDEBAR POPUPS =====================
+
+setupPopup("assignedLink", "assignedModal", "assignedBackdrop", "assignedClose");
 setupPopup("reportsLink", "reportsModal", "reportsBackdrop", "reportsClose");
 setupPopup("emailSectionLink", "emailModal", "emailBackdrop", "emailClose");
 
 
-// ===================== MAIN CARD LINKS =====================
+// ===================== ASSIGNED TABLE ACTION =====================
 
-// Tickets
-document.getElementById("openCreateTicket")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  openPopup("assignedModal", "assignedBackdrop");
-});
+const assignedTable = document.querySelector(".assigned-table");
 
-document.getElementById("openAssignTicket")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  openPopup("assignedModal", "assignedBackdrop");
-});
+if (assignedTable) {
+  assignedTable.addEventListener("click", (e) => {
+    if (e.target.classList.contains("resolve-btn")) {
+      const row = e.target.closest("tr");
+      const statusDropdown = row.querySelector(".status-dropdown");
 
-// Stats & Reports
-document.getElementById("openStats")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  openPopup("reportsModal", "reportsBackdrop");
-});
+      if (statusDropdown) {
+        statusDropdown.value = "Resolved";
+        statusDropdown.classList.add("status-resolved");
+      }
 
-document.getElementById("openPerformance")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  openPopup("reportsModal", "reportsBackdrop");
-});
-
-// Team
-document.getElementById("openTeamList")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  alert("👥 Team Members:\n- Alice\n- Bob\n- Charlie\n- Diana");
-});
-
-document.getElementById("openTeamTasks")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  alert("📋 Team Tasks:\n- Resolve tickets\n- Prepare reports\n- Customer follow-ups");
-});
+      e.target.disabled = true;
+      e.target.textContent = "Done";
+    }
+  });
+}
 
 
-// ===================== FORMS =====================
+// ===================== QUICK ENQUIRY FORM =====================
 
-// Quick Enquiry
 document.getElementById("quickEnquiryForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -128,7 +116,8 @@ document.getElementById("quickEnquiryForm")?.addEventListener("submit", (e) => {
 });
 
 
-// Email Customers
+// ===================== EMAIL FORM =====================
+
 document.getElementById("emailForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -146,24 +135,28 @@ document.getElementById("emailForm")?.addEventListener("submit", (e) => {
 });
 
 
-// Elements
+// ===================== SIGN OUT POPUP =====================
+
 const signoutLink = document.getElementById("signoutLink");
 const signoutPopup = document.getElementById("signoutPopup");
 const confirmSignout = document.getElementById("confirmSignout");
 const cancelSignout = document.getElementById("cancelSignout");
 
-// Show popup when clicking sidebar Sign Out
-signoutLink.addEventListener("click", (e) => {
-  e.preventDefault(); // prevent direct navigation
-  signoutPopup.classList.remove("hidden");
-});
+if (signoutLink && signoutPopup) {
+  signoutLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    signoutPopup.classList.remove("hidden");
+  });
+}
 
-// Hide popup if "No" clicked
-cancelSignout.addEventListener("click", () => {
-  signoutPopup.classList.add("hidden");
-});
+if (cancelSignout) {
+  cancelSignout.addEventListener("click", () => {
+    signoutPopup.classList.add("hidden");
+  });
+}
 
-// Redirect if "Yes" clicked
-confirmSignout.addEventListener("click", () => {
-  window.location.href = "signout.html"; // placeholder redirect
-});
+if (confirmSignout) {
+  confirmSignout.addEventListener("click", () => {
+    window.location.href = "login.html";
+  });
+}
