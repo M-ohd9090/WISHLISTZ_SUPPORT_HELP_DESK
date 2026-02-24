@@ -166,12 +166,14 @@ function restoreLogin() {
 }
 
 // Try restoring every 500ms until customers load
-const restoreInterval = setInterval(() => {
-  if (window.customers && window.customers.length > 0) {
-    restoreLogin();
-    clearInterval(restoreInterval);
-  }
-}, 500);
+window.addEventListener("load", () => {
+  const checkCustomersLoaded = setInterval(() => {
+    if (window.customers && window.customers.length > 0) {
+      restoreLogin();
+      clearInterval(checkCustomersLoaded);
+    }
+  }, 300);
+});
 
 function createSummaryChart(totalSpent) {
   const chartContainer = document.createElement("div");
@@ -322,9 +324,9 @@ if (text.startsWith("cancel ord")) {
 
   const orderId = text.split(" ")[1].toUpperCase();
 
-  if (!window.orders) {
-    return "⚠ Orders database not loaded.";
-  }
+  if (!window.orders || window.orders.length === 0) {
+  return "⚠ Orders database not loaded.";
+}
 
   const order = window.orders.find(o =>
     o.orderId.toUpperCase() === orderId &&
@@ -372,10 +374,14 @@ if (text.includes("my summary") || text.includes("total spending")) {
   let loyalty = "Silver 🥉";
   if (totalSpent > 5000 && totalSpent <= 15000) loyalty = "Gold 🥈";
   if (totalSpent > 15000) loyalty = "Platinum 🥇";
-
-  setTimeout(() => {
-  const chart = createSummaryChart(totalSpent);
-  chatMessages.lastChild.querySelector(".message-content").appendChild(chart);
+setTimeout(() => {
+  const lastMessage = chatMessages.lastElementChild;
+  if (lastMessage) {
+    const content = lastMessage.querySelector(".message-content");
+    if (content) {
+      content.appendChild(createSummaryChart(totalSpent));
+    }
+  }
 }, 100);
 
 return `📊 Customer Summary:
@@ -389,14 +395,22 @@ Loyalty Level: ${loyalty}`;
 // ================= SYSTEM NAVIGATION =================
 
 // Assigned Tickets
-if (text.includes("ticket")) {
+if (
+  text.includes("open tickets") ||
+  text.includes("show tickets") ||
+  text.includes("assigned tickets")
+) {
   const popup = document.getElementById("assignedBackdrop");
   if (popup) popup.style.display = "flex";
   return "📋 Opening Assigned Tickets section.";
 }
 
 // Reports
-if (text.includes("report")) {
+if (
+  text.includes("open reports") ||
+  text.includes("show reports") ||
+  text.includes("weekly reports")
+){
   const reportsBackdrop = document.getElementById("reportsBackdrop");
   const reportsModal = document.getElementById("reportsModal");
 
@@ -407,7 +421,11 @@ if (text.includes("report")) {
 }
 
 // Email
-if (text.includes("email")) {
+if (
+  text.includes("send email") ||
+  text.includes("email customer") ||
+  text.includes("open email section")
+) {
   const emailBackdrop = document.getElementById("emailBackdrop");
   const emailModal = document.getElementById("emailModal");
 
@@ -574,7 +592,10 @@ Date: ${o.date}
   }
 
   // ================= CANCELLATION =================
-  if (text.includes("cancel")) {
+  if (
+  text.includes("cancel my order") ||
+  text.includes("order cancellation")
+) {
     return "❌ Order cancellation request.\n\n• Check if order is dispatched\n• If not shipped → Cancel immediately\n• If shipped → Inform customer cancellation not possible\n• Update order status accordingly";
   }
 
