@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let customers = [];
+  window.customers = [];
 
   const searchInput = document.getElementById("customerSearchInput");
   const resultsDiv = document.getElementById("customerResults");
@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===================== LOAD DATA FROM CSV =====================
   async function loadCustomers() {
     try {
-      const response = await fetch("customers.csv");
+      const response = await fetch("customers.csv.xls");
       const csvText = await response.text();
 
       const rows = csvText.split("\n").slice(1);
 
-      customers = rows
+      window.customers = rows
         .filter((row) => row.trim() !== "")
         .map((row) => {
           const cols = row.split(",");
@@ -34,6 +34,33 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Error loading customers:", error);
     }
   }
+
+window.orders = [];
+
+async function loadOrders() {
+  const response = await fetch("orders.csv.xls");
+  const csvText = await response.text();
+
+  const rows = csvText.split("\n").slice(1);
+
+  window.orders = rows
+    .filter(row => row.trim() !== "")
+    .map(row => {
+      const cols = row.split(",");
+      return {
+        email: cols[0],
+        orderId: cols[1],
+        product: cols[2],
+        amount: cols[3],
+        status: cols[4],
+        date: cols[5],
+      };
+    });
+
+  console.log("Orders loaded:", window.orders);
+}
+
+loadOrders();
 
   // ===================== DISPLAY CUSTOMERS =====================
   function displayCustomers(list) {

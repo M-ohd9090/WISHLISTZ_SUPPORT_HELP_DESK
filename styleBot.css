@@ -164,26 +164,33 @@
 }
 
 .message {
-  margin-bottom: 10px;
+  margin-bottom: 18px;
   display: flex;
+}
+
+.bot-message {
+  justify-content: flex-start;
+}
+.user-message {
+  justify-content: flex-end;
 }
 
 .message-content {
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   max-width: 70%;
   position: relative;
+  word-wrap: break-word;
 }
 
 .bot-message .message-content {
   background: #ffebeb;
-  align-self: flex-start;
+  color: #000;
 }
 
 .user-message .message-content {
   background: #ff4b2b;
   color: white;
-  align-self: flex-end;
 }
 
 .message-time {
