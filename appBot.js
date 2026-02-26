@@ -1,121 +1,44 @@
 // ================= CHATBOT FUNCTIONALITY =================
 let currentCustomer = null;
 let isLoggedIn = false;
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+// Elements
+const chatbotContainer = document.getElementById("chatbot-container");
+const minimizedChat = document.getElementById("minimizedChat");
+const chatWindow = document.getElementById("chatWindow");
+const minimizeChatBtn = document.getElementById("minimizeChatBtn");
+const sendButton = document.getElementById("sendButton");
+const messageInput = document.getElementById("messageInput");
+const chatMessages = document.getElementById("chatMessages");
+const attachButton = document.getElementById("attachButton");
+const fileInput = document.getElementById("fileInput");
+const themeToggle = document.getElementById("themeToggle");
 
-// protect against invalid JSON in localStorage
-let tickets = [];
-try {
-  tickets = JSON.parse(localStorage.getItem("tickets")) || [];
-} catch (e) {
-  console.warn("Failed to parse stored tickets, resetting to empty list", e);
-  tickets = [];
-}
-
-// if data loading fails we'll store an error message so the bot can
-// inform the user instead of silently failing.
-let dataLoadError = null;
-
-// helper functions are defined below; DOM references & listeners are created
-// inside DOMContentLoaded so that the script can be safely included on pages
-// that might not have the chat markup.
-
-// all element references and listeners are constructed once DOM is ready
-
-document.addEventListener("DOMContentLoaded", () => {
-  const chatbotContainer = document.getElementById("chatbot-container");
-  if (!chatbotContainer) {
-    // chat not present on this page, nothing to do
-    return;
-  }
-
-  const minimizedChat = document.getElementById("minimizedChat");
-  const chatWindow = document.getElementById("chatWindow");
-  const minimizeChatBtn = document.getElementById("minimizeChatBtn");
-  const sendButton = document.getElementById("sendButton");
-  const messageInput = document.getElementById("messageInput");
-  const chatMessages = document.getElementById("chatMessages");
-  const attachButton = document.getElementById("attachButton");
-  const fileInput = document.getElementById("fileInput");
-  const themeToggle = document.getElementById("themeToggle");
-
-  // Toggle chatbot open/close
-  if (minimizedChat) {
-    minimizedChat.addEventListener("click", () => {
-      chatbotContainer.classList.add("open");
-      minimizedChat.style.display = "none";
-      if (chatWindow) chatWindow.classList.remove("hidden");
-    });
-  }
-
-  // Minimize chat back to button
-  if (minimizeChatBtn) {
-    minimizeChatBtn.addEventListener("click", () => {
-      chatbotContainer.classList.remove("open");
-      if (minimizedChat) minimizedChat.style.display = "flex";
-      if (chatWindow) chatWindow.classList.add("hidden");
-    });
-  }
-
-  // Send message
-  if (sendButton) {
-    sendButton.addEventListener("click", sendMessage);
-  }
-  if (messageInput) {
-    messageInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-  }
-
-  // File attachment
-  if (attachButton && fileInput) {
-    attachButton.addEventListener("click", () => {
-      fileInput.click();
-    });
-
-    fileInput.addEventListener("change", () => {
-      if (fileInput.files.length > 0) {
-        botReply(`📎 File attached: ${fileInput.files[0].name}`);
-      }
-    });
-  }
-
-  // Dark/Light mode toggle
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-      chatbotContainer.classList.toggle("dark-mode");
-      // Optional: change icon depending on mode
-      if (chatbotContainer.classList.contains("dark-mode")) {
-        themeToggle.textContent = "☀️"; // Light mode icon
-      } else {
-        themeToggle.textContent = "🌓"; // Dark mode icon
-      }
-    });
-  }
-
-  // start loading data right away so bot has it by first message
-  ensureDataLoaded();
+// Toggle chatbot open/close
+minimizedChat.addEventListener("click", () => {
+  chatbotContainer.classList.add("open");
+  minimizedChat.style.display = "none";
+  chatWindow.classList.remove("hidden");
 });
 
-async function sendMessage() {
-  // ensure data is available before processing any customer/order commands
-  await ensureDataLoaded();
+// Minimize chat back to button
+minimizeChatBtn.addEventListener("click", () => {
+  chatbotContainer.classList.remove("open");
+  minimizedChat.style.display = "flex";
+  chatWindow.classList.add("hidden");
+});
 
-  if (dataLoadError) {
-    botReply(`${dataLoadError} (make sure you're serving the files via HTTP)`);
-    return;
+// Send message
+sendButton.addEventListener("click", sendMessage);
+messageInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
   }
+});
 
-  // these references should exist because the function is only called from
-  // listeners that are registered after DOMContentLoaded; still guard just in
-  // case somebody calls it manually
-  const inputEl = document.getElementById("messageInput");
-  const messagesContainer = document.getElementById("chatMessages");
-  if (!inputEl || !messagesContainer) return;
-
-  const text = inputEl.value.trim();
+function sendMessage() {
+  const text = messageInput.value.trim();
   if (text === "") return;
 
   // Create user message
@@ -135,24 +58,19 @@ async function sendMessage() {
 
   messageContent.appendChild(timeStamp);
   messageWrapper.appendChild(messageContent);
-  messagesContainer.appendChild(messageWrapper);
+  chatMessages.appendChild(messageWrapper);
 
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  inputEl.value = "";
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  messageInput.value = "";
 
-  try {
-    const reply = await generateBotResponse(text);
+  // Generate smart reply
+  setTimeout(() => {
+    const reply = generateBotResponse(text);
     botReply(reply);
-  } catch (err) {
-    console.error("chatbot error", err);
-    botReply("❌ Oops! I ran into an error processing your message.");
-  }
+  }, 800);
 }
 
 function botReply(text) {
-  const messagesContainer = document.getElementById("chatMessages");
-  if (!messagesContainer) return;
-
   const messageWrapper = document.createElement("div");
   messageWrapper.classList.add("message", "bot-message");
 
@@ -169,95 +87,32 @@ function botReply(text) {
 
   messageContent.appendChild(timeStamp);
   messageWrapper.appendChild(messageContent);
-  messagesContainer.appendChild(messageWrapper);
+  chatMessages.appendChild(messageWrapper);
 
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// the attachment/theme listeners are registered inside DOMContentLoaded –
-// stray references outside that scope were causing errors and prevented the
-// script from running further.  See above for the proper handlers.
+// File attachment
+attachButton.addEventListener("click", () => {
+  fileInput.click();
+});
 
-// ================= DATA LOADING HELPERS =================
-
-async function fetchCsv(url) {
-  // resolve relative to current document location to handle pages in subfolders
-  const resolved = new URL(url, document.location.href).href;
-  const res = await fetch(resolved);
-  if (!res.ok) throw new Error(`Failed to fetch ${resolved}: ${res.status}`);
-  return res.text();
-}
-
-async function loadCustomers() {
-  try {
-    const csvText = await fetchCsv("customers.csv");
-    const rows = csvText.split("\n").slice(1);
-
-    window.customers = rows
-      .filter((r) => r.trim() !== "")
-      .map((row) => {
-        const cols = row.split(",");
-        return {
-          name: cols[0],
-          email: cols[1],
-          phone: cols[2],
-          address: cols[3],
-          type: cols[4],
-          gender: cols[5],
-          age: cols[6],
-          duration: cols[7],
-        };
-      });
-
-    console.log("customers loaded", window.customers.length);
-    return true;
-  } catch (err) {
-    console.error("could not load customers", err);
-    dataLoadError = "Unable to load customer database.";
-    return false;
+fileInput.addEventListener("change", () => {
+  if (fileInput.files.length > 0) {
+    botReply(`📎 File attached: ${fileInput.files[0].name}`);
   }
-}
+});
 
-async function loadOrders() {
-  try {
-    const csvText = await fetchCsv("orders.csv");
-    const rows = csvText.split("\n").slice(1);
-
-    window.orders = rows
-      .filter((r) => r.trim() !== "")
-      .map((row) => {
-        const cols = row.split(",");
-        return {
-          email: cols[0],
-          orderId: cols[1],
-          product: cols[2],
-          amount: cols[3],
-          status: cols[4],
-          date: cols[5],
-        };
-      });
-
-    console.log("orders loaded", window.orders.length);
-    return true;
-  } catch (err) {
-    console.error("could not load orders", err);
-    dataLoadError = "Unable to load orders database.";
-    return false;
+// Dark/Light mode toggle
+themeToggle.addEventListener("click", () => {
+  chatbotContainer.classList.toggle("dark-mode");
+  // Optional: change icon depending on mode
+  if (chatbotContainer.classList.contains("dark-mode")) {
+    themeToggle.textContent = "☀️"; // Light mode icon
+  } else {
+    themeToggle.textContent = "🌓"; // Dark mode icon
   }
-}
-
-async function ensureDataLoaded() {
-  // if an error already occurred, don't try again every time
-  if (dataLoadError) return;
-
-  if (!window.customers || window.customers.length === 0) {
-    await loadCustomers();
-  }
-  if (!window.orders || window.orders.length === 0) {
-    await loadOrders();
-  }
-}
-
+});
 // ================= CLOSE ASSIGNED TICKETS =================
 const closeAssignedBtn = document.getElementById("closeAssigned");
 
@@ -339,17 +194,10 @@ function createSummaryChart(totalSpent) {
   return chartContainer;
 }
 
-// made asynchronous for future API integrations and to match sendMessage
-async function generateBotResponse(userText) {
-  // make sure we have fresh data before interpreting commands
-  await ensureDataLoaded();
+function generateBotResponse(userText) {
   const text = userText.toLowerCase().trim();
 
   // ================= LOGIN SYSTEM =================
-  if (text === "login") {
-    return "🔐 To sign in please type: login your-email@example.com";
-  }
-
   if (text.startsWith("login ")) {
     const emailInput = text.replace("login ", "").trim();
 
@@ -443,7 +291,7 @@ Status: ${t.status}
   }
 
   // ================= PROCESS REFUND =================
-  if (text.startsWith("refund ord") || text.startsWith("refund order")) {
+  if (text.startsWith("refund ord")) {
     if (!isLoggedIn || !currentCustomer) {
       return "🔐 Please login first.";
     }
@@ -469,7 +317,7 @@ Status: ${t.status}
     return `💰 Refund for ${orderId} has been successfully processed.`;
   }
   // ================= CANCEL ORDER =================
-  if (text.startsWith("cancel ord") || text.startsWith("cancel order")) {
+  if (text.startsWith("cancel ord")) {
     if (!isLoggedIn || !currentCustomer) {
       return "🔐 Please login first.";
     }
