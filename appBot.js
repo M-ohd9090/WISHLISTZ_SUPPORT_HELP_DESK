@@ -1,44 +1,121 @@
 // ================= CHATBOT FUNCTIONALITY =================
 let currentCustomer = null;
 let isLoggedIn = false;
-let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
-// Elements
-const chatbotContainer = document.getElementById("chatbot-container");
-const minimizedChat = document.getElementById("minimizedChat");
-const chatWindow = document.getElementById("chatWindow");
-const minimizeChatBtn = document.getElementById("minimizeChatBtn");
-const sendButton = document.getElementById("sendButton");
-const messageInput = document.getElementById("messageInput");
-const chatMessages = document.getElementById("chatMessages");
-const attachButton = document.getElementById("attachButton");
-const fileInput = document.getElementById("fileInput");
-const themeToggle = document.getElementById("themeToggle");
 
-// Toggle chatbot open/close
-minimizedChat.addEventListener("click", () => {
-  chatbotContainer.classList.add("open");
-  minimizedChat.style.display = "none";
-  chatWindow.classList.remove("hidden");
-});
+// protect against invalid JSON in localStorage
+let tickets = [];
+try {
+  tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+} catch (e) {
+  console.warn("Failed to parse stored tickets, resetting to empty list", e);
+  tickets = [];
+}
 
-// Minimize chat back to button
-minimizeChatBtn.addEventListener("click", () => {
-  chatbotContainer.classList.remove("open");
-  minimizedChat.style.display = "flex";
-  chatWindow.classList.add("hidden");
-});
+// if data loading fails we'll store an error message so the bot can
+// inform the user instead of silently failing.
+let dataLoadError = null;
 
-// Send message
-sendButton.addEventListener("click", sendMessage);
-messageInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
+// helper functions are defined below; DOM references & listeners are created
+// inside DOMContentLoaded so that the script can be safely included on pages
+// that might not have the chat markup.
+
+// all element references and listeners are constructed once DOM is ready
+
+document.addEventListener("DOMContentLoaded", () => {
+  const chatbotContainer = document.getElementById("chatbot-container");
+  if (!chatbotContainer) {
+    // chat not present on this page, nothing to do
+    return;
   }
+
+  const minimizedChat = document.getElementById("minimizedChat");
+  const chatWindow = document.getElementById("chatWindow");
+  const minimizeChatBtn = document.getElementById("minimizeChatBtn");
+  const sendButton = document.getElementById("sendButton");
+  const messageInput = document.getElementById("messageInput");
+  const chatMessages = document.getElementById("chatMessages");
+  const attachButton = document.getElementById("attachButton");
+  const fileInput = document.getElementById("fileInput");
+  const themeToggle = document.getElementById("themeToggle");
+
+  // Toggle chatbot open/close
+  if (minimizedChat) {
+    minimizedChat.addEventListener("click", () => {
+      chatbotContainer.classList.add("open");
+      minimizedChat.style.display = "none";
+      if (chatWindow) chatWindow.classList.remove("hidden");
+    });
+  }
+
+  // Minimize chat back to button
+  if (minimizeChatBtn) {
+    minimizeChatBtn.addEventListener("click", () => {
+      chatbotContainer.classList.remove("open");
+      if (minimizedChat) minimizedChat.style.display = "flex";
+      if (chatWindow) chatWindow.classList.add("hidden");
+    });
+  }
+
+  // Send message
+  if (sendButton) {
+    sendButton.addEventListener("click", sendMessage);
+  }
+  if (messageInput) {
+    messageInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
+
+  // File attachment
+  if (attachButton && fileInput) {
+    attachButton.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 0) {
+        botReply(`📎 File attached: ${fileInput.files[0].name}`);
+      }
+    });
+  }
+
+  // Dark/Light mode toggle
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      chatbotContainer.classList.toggle("dark-mode");
+      // Optional: change icon depending on mode
+      if (chatbotContainer.classList.contains("dark-mode")) {
+        themeToggle.textContent = "☀️"; // Light mode icon
+      } else {
+        themeToggle.textContent = "🌓"; // Dark mode icon
+      }
+    });
+  }
+
+  // start loading data right away so bot has it by first message
+  ensureDataLoaded();
 });
 
-function sendMessage() {
-  const text = messageInput.value.trim();
+async function sendMessage() {
+  // ensure data is available before processing any customer/order commands
+  await ensureDataLoaded();
+
+  if (dataLoadError) {
+    botReply(`${dataLoadError} (make sure you're serving the files via HTTP)`);
+    return;
+  }
+
+  // these references should exist because the function is only called from
+  // listeners that are registered after DOMContentLoaded; still guard just in
+  // case somebody calls it manually
+  const inputEl = document.getElementById("messageInput");
+  const messagesContainer = document.getElementById("chatMessages");
+  if (!inputEl || !messagesContainer) return;
+
+  const text = inputEl.value.trim();
   if (text === "") return;
 
   // Create user message
@@ -51,23 +128,31 @@ function sendMessage() {
 
   const timeStamp = document.createElement("span");
   timeStamp.classList.add("message-time");
-  timeStamp.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  timeStamp.textContent = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   messageContent.appendChild(timeStamp);
   messageWrapper.appendChild(messageContent);
-  chatMessages.appendChild(messageWrapper);
+  messagesContainer.appendChild(messageWrapper);
 
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-  messageInput.value = "";
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  inputEl.value = "";
 
-  // Generate smart reply
-  setTimeout(() => {
-    const reply = generateBotResponse(text);
+  try {
+    const reply = await generateBotResponse(text);
     botReply(reply);
-  }, 800);
+  } catch (err) {
+    console.error("chatbot error", err);
+    botReply("❌ Oops! I ran into an error processing your message.");
+  }
 }
 
 function botReply(text) {
+  const messagesContainer = document.getElementById("chatMessages");
+  if (!messagesContainer) return;
+
   const messageWrapper = document.createElement("div");
   messageWrapper.classList.add("message", "bot-message");
 
@@ -77,36 +162,102 @@ function botReply(text) {
 
   const timeStamp = document.createElement("span");
   timeStamp.classList.add("message-time");
-  timeStamp.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  timeStamp.textContent = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   messageContent.appendChild(timeStamp);
   messageWrapper.appendChild(messageContent);
-  chatMessages.appendChild(messageWrapper);
+  messagesContainer.appendChild(messageWrapper);
 
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// File attachment
-attachButton.addEventListener("click", () => {
-  fileInput.click();
-});
+// the attachment/theme listeners are registered inside DOMContentLoaded –
+// stray references outside that scope were causing errors and prevented the
+// script from running further.  See above for the proper handlers.
 
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length > 0) {
-    botReply(`📎 File attached: ${fileInput.files[0].name}`);
-  }
-});
+// ================= DATA LOADING HELPERS =================
 
-// Dark/Light mode toggle
-themeToggle.addEventListener("click", () => {
-  chatbotContainer.classList.toggle("dark-mode");
-  // Optional: change icon depending on mode
-  if (chatbotContainer.classList.contains("dark-mode")) {
-    themeToggle.textContent = "☀️"; // Light mode icon
-  } else {
-    themeToggle.textContent = "🌓"; // Dark mode icon
+async function fetchCsv(url) {
+  // resolve relative to current document location to handle pages in subfolders
+  const resolved = new URL(url, document.location.href).href;
+  const res = await fetch(resolved);
+  if (!res.ok) throw new Error(`Failed to fetch ${resolved}: ${res.status}`);
+  return res.text();
+}
+
+async function loadCustomers() {
+  try {
+    const csvText = await fetchCsv("customers.csv");
+    const rows = csvText.split("\n").slice(1);
+
+    window.customers = rows
+      .filter((r) => r.trim() !== "")
+      .map((row) => {
+        const cols = row.split(",");
+        return {
+          name: cols[0],
+          email: cols[1],
+          phone: cols[2],
+          address: cols[3],
+          type: cols[4],
+          gender: cols[5],
+          age: cols[6],
+          duration: cols[7],
+        };
+      });
+
+    console.log("customers loaded", window.customers.length);
+    return true;
+  } catch (err) {
+    console.error("could not load customers", err);
+    dataLoadError = "Unable to load customer database.";
+    return false;
   }
-});
+}
+
+async function loadOrders() {
+  try {
+    const csvText = await fetchCsv("orders.csv");
+    const rows = csvText.split("\n").slice(1);
+
+    window.orders = rows
+      .filter((r) => r.trim() !== "")
+      .map((row) => {
+        const cols = row.split(",");
+        return {
+          email: cols[0],
+          orderId: cols[1],
+          product: cols[2],
+          amount: cols[3],
+          status: cols[4],
+          date: cols[5],
+        };
+      });
+
+    console.log("orders loaded", window.orders.length);
+    return true;
+  } catch (err) {
+    console.error("could not load orders", err);
+    dataLoadError = "Unable to load orders database.";
+    return false;
+  }
+}
+
+async function ensureDataLoaded() {
+  // if an error already occurred, don't try again every time
+  if (dataLoadError) return;
+
+  if (!window.customers || window.customers.length === 0) {
+    await loadCustomers();
+  }
+  if (!window.orders || window.orders.length === 0) {
+    await loadOrders();
+  }
+}
+
 // ================= CLOSE ASSIGNED TICKETS =================
 const closeAssignedBtn = document.getElementById("closeAssigned");
 
@@ -148,13 +299,12 @@ if (emailClose) {
 }
 // ================= RESTORE LOGIN AFTER CUSTOMERS LOAD =================
 function restoreLogin() {
-
   const savedEmail = localStorage.getItem("loggedInUserEmail");
 
   if (!savedEmail || !window.customers) return;
 
-  const found = window.customers.find(c =>
-    c.email.toLowerCase() === savedEmail.toLowerCase()
+  const found = window.customers.find(
+    (c) => c.email.toLowerCase() === savedEmail.toLowerCase(),
   );
 
   if (found) {
@@ -189,288 +339,289 @@ function createSummaryChart(totalSpent) {
   return chartContainer;
 }
 
-
-function generateBotResponse(userText) {
+// made asynchronous for future API integrations and to match sendMessage
+async function generateBotResponse(userText) {
+  // make sure we have fresh data before interpreting commands
+  await ensureDataLoaded();
   const text = userText.toLowerCase().trim();
 
   // ================= LOGIN SYSTEM =================
-if (text.startsWith("login ")) {
-
-  const emailInput = text.replace("login ", "").trim();
-
-  if (!window.customers || window.customers.length === 0) {
-    return "⚠ Customer database not loaded yet.";
+  if (text === "login") {
+    return "🔐 To sign in please type: login your-email@example.com";
   }
 
-  const found = window.customers.find(c =>
-    c.email.toLowerCase() === emailInput
-  );
+  if (text.startsWith("login ")) {
+    const emailInput = text.replace("login ", "").trim();
 
-  if (found) {
-    currentCustomer = found;
-isLoggedIn = true;
+    if (!window.customers || window.customers.length === 0) {
+      return "⚠ Customer database not loaded yet.";
+    }
 
-// Save to localStorage
-localStorage.setItem("loggedInUserEmail", found.email);
+    const found = window.customers.find(
+      (c) => c.email.toLowerCase() === emailInput,
+    );
 
-    return `✅ Login successful!
+    if (found) {
+      currentCustomer = found;
+      isLoggedIn = true;
+
+      // Save to localStorage
+      localStorage.setItem("loggedInUserEmail", found.email);
+
+      return `✅ Login successful!
 
 Welcome back, ${found.name} 🎉
 You are logged in as a ${found.type} customer.`;
-  } else {
-    return "❌ No customer found with that email.";
-  }
-}
-
-if (text === "logout") {
-  currentCustomer = null;
-isLoggedIn = false;
-
-localStorage.removeItem("loggedInUserEmail");
-
-return "👋 You have been logged out successfully.";
-}
-// ================= CREATE TICKET =================
-if (text.includes("create ticket")) {
-
-  if (!currentCustomer) {
-    return "🔐 Please login first before creating a ticket.";
+    } else {
+      return "❌ No customer found with that email.";
+    }
   }
 
-  const issue = text.replace("create ticket", "").trim() || "General Issue";
+  if (text === "logout") {
+    currentCustomer = null;
+    isLoggedIn = false;
 
-  const newTicket = {
-    ticketId: "TCK" + (tickets.length + 1),
-    customer: currentCustomer.name,
-    email: currentCustomer.email,
-    issue: issue,
-    status: "Open",
-    priority: issue.includes("damaged") ? "High" : "Medium"
-  };
+    localStorage.removeItem("loggedInUserEmail");
 
-  tickets.push(newTicket);
-  localStorage.setItem("tickets", JSON.stringify(tickets));
+    return "👋 You have been logged out successfully.";
+  }
+  // ================= CREATE TICKET =================
+  if (text.includes("create ticket")) {
+    if (!currentCustomer) {
+      return "🔐 Please login first before creating a ticket.";
+    }
 
-  return `🎫 Ticket Created Successfully!
+    const issue = text.replace("create ticket", "").trim() || "General Issue";
+
+    const newTicket = {
+      ticketId: "TCK" + (tickets.length + 1),
+      customer: currentCustomer.name,
+      email: currentCustomer.email,
+      issue: issue,
+      status: "Open",
+      priority: issue.includes("damaged") ? "High" : "Medium",
+    };
+
+    tickets.push(newTicket);
+    localStorage.setItem("tickets", JSON.stringify(tickets));
+
+    return `🎫 Ticket Created Successfully!
 
 Ticket ID: ${newTicket.ticketId}
 Issue: ${newTicket.issue}
 Priority: ${newTicket.priority}
 Status: Open`;
-}
-
-// ================= SHOW MY TICKETS =================
-if (text.includes("my tickets")) {
-
-  if (!isLoggedIn || !currentCustomer) {
-    return "🔐 Please login first.";
   }
 
-  const myTickets = tickets.filter(t =>
-    t.email.toLowerCase() === currentCustomer.email.toLowerCase()
-  );
+  // ================= SHOW MY TICKETS =================
+  if (text.includes("my tickets")) {
+    if (!isLoggedIn || !currentCustomer) {
+      return "🔐 Please login first.";
+    }
 
-  if (myTickets.length === 0) {
-    return "🎫 You have no tickets.";
-  }
+    const myTickets = tickets.filter(
+      (t) => t.email.toLowerCase() === currentCustomer.email.toLowerCase(),
+    );
 
-  let response = "🎫 Your Tickets:\n\n";
+    if (myTickets.length === 0) {
+      return "🎫 You have no tickets.";
+    }
 
-  myTickets.forEach(t => {
-    response += `
+    let response = "🎫 Your Tickets:\n\n";
+
+    myTickets.forEach((t) => {
+      response += `
 Ticket ID: ${t.ticketId}
 Issue: ${t.issue}
 Priority: ${t.priority}
 Status: ${t.status}
 -------------------------
 `;
-  });
+    });
 
-  return response;
-}
-
-// ================= PROCESS REFUND =================
-if (text.startsWith("refund ord")) {
-
-  if (!isLoggedIn || !currentCustomer) {
-    return "🔐 Please login first.";
+    return response;
   }
 
-  const orderId = text.split(" ")[1].toUpperCase();
-
-  const order = window.orders.find(o =>
-    o.orderId.toUpperCase() === orderId &&
-    o.email.toLowerCase() === currentCustomer.email.toLowerCase()
-  );
-
-  if (!order) {
-    return "❌ Order not found.";
-  }
-
-  if (order.status === "Refunded") {
-    return "⚠ Refund already processed.";
-  }
-
-  order.status = "Refunded";
-
-  return `💰 Refund for ${orderId} has been successfully processed.`;
-}
-// ================= CANCEL ORDER =================
-if (text.startsWith("cancel ord")) {
-
-  if (!isLoggedIn || !currentCustomer) {
-    return "🔐 Please login first.";
-  }
-
-  const orderId = text.split(" ")[1].toUpperCase();
-
-  if (!window.orders || window.orders.length === 0) {
-  return "⚠ Orders database not loaded.";
-}
-
-  const order = window.orders.find(o =>
-    o.orderId.toUpperCase() === orderId &&
-    o.email.toLowerCase() === currentCustomer.email.toLowerCase()
-  );
-
-  if (!order) {
-    return "❌ Order not found for your account.";
-  }
-
-  if (order.status === "Cancelled") {
-    return "⚠ This order is already cancelled.";
-  }
-
-  order.status = "Cancelled";
-
-  return `❌ Order ${orderId} has been successfully cancelled.`;
-}
-
-// ================= TOTAL SUMMARY + LOYALTY =================
-if (text.includes("my summary") || text.includes("total spending")) {
-
-  if (!isLoggedIn || !currentCustomer) {
-    return "🔐 Please login first.";
-  }
-
-  if (!window.orders) {
-    return "⚠ Orders database not loaded.";
-  }
-
-  const customerOrders = window.orders.filter(o =>
-    o.email.toLowerCase() === currentCustomer.email.toLowerCase()
-  );
-
-  if (customerOrders.length === 0) {
-    return "📦 You have no orders yet.";
-  }
-
-  let totalSpent = 0;
-
-  customerOrders.forEach(o => {
-    totalSpent += parseFloat(o.amount);
-  });
-
-  let loyalty = "Silver 🥉";
-  if (totalSpent > 5000 && totalSpent <= 15000) loyalty = "Gold 🥈";
-  if (totalSpent > 15000) loyalty = "Platinum 🥇";
-setTimeout(() => {
-  const lastMessage = chatMessages.lastElementChild;
-  if (lastMessage) {
-    const content = lastMessage.querySelector(".message-content");
-    if (content) {
-      content.appendChild(createSummaryChart(totalSpent));
+  // ================= PROCESS REFUND =================
+  if (text.startsWith("refund ord") || text.startsWith("refund order")) {
+    if (!isLoggedIn || !currentCustomer) {
+      return "🔐 Please login first.";
     }
-  }
-}, 100);
 
-return `📊 Customer Summary:
+    const orderId = text.split(" ")[1].toUpperCase();
+
+    const order = window.orders.find(
+      (o) =>
+        o.orderId.toUpperCase() === orderId &&
+        o.email.toLowerCase() === currentCustomer.email.toLowerCase(),
+    );
+
+    if (!order) {
+      return "❌ Order not found.";
+    }
+
+    if (order.status === "Refunded") {
+      return "⚠ Refund already processed.";
+    }
+
+    order.status = "Refunded";
+
+    return `💰 Refund for ${orderId} has been successfully processed.`;
+  }
+  // ================= CANCEL ORDER =================
+  if (text.startsWith("cancel ord") || text.startsWith("cancel order")) {
+    if (!isLoggedIn || !currentCustomer) {
+      return "🔐 Please login first.";
+    }
+
+    const orderId = text.split(" ")[1].toUpperCase();
+
+    if (!window.orders || window.orders.length === 0) {
+      return "⚠ Orders database not loaded.";
+    }
+
+    const order = window.orders.find(
+      (o) =>
+        o.orderId.toUpperCase() === orderId &&
+        o.email.toLowerCase() === currentCustomer.email.toLowerCase(),
+    );
+
+    if (!order) {
+      return "❌ Order not found for your account.";
+    }
+
+    if (order.status === "Cancelled") {
+      return "⚠ This order is already cancelled.";
+    }
+
+    order.status = "Cancelled";
+
+    return `❌ Order ${orderId} has been successfully cancelled.`;
+  }
+
+  // ================= TOTAL SUMMARY + LOYALTY =================
+  if (text.includes("my summary") || text.includes("total spending")) {
+    if (!isLoggedIn || !currentCustomer) {
+      return "🔐 Please login first.";
+    }
+
+    if (!window.orders) {
+      return "⚠ Orders database not loaded.";
+    }
+
+    const customerOrders = window.orders.filter(
+      (o) => o.email.toLowerCase() === currentCustomer.email.toLowerCase(),
+    );
+
+    if (customerOrders.length === 0) {
+      return "📦 You have no orders yet.";
+    }
+
+    let totalSpent = 0;
+
+    customerOrders.forEach((o) => {
+      totalSpent += parseFloat(o.amount);
+    });
+
+    let loyalty = "Silver 🥉";
+    if (totalSpent > 5000 && totalSpent <= 15000) loyalty = "Gold 🥈";
+    if (totalSpent > 15000) loyalty = "Platinum 🥇";
+    setTimeout(() => {
+      const lastMessage = chatMessages.lastElementChild;
+      if (lastMessage) {
+        const content = lastMessage.querySelector(".message-content");
+        if (content) {
+          content.appendChild(createSummaryChart(totalSpent));
+        }
+      }
+    }, 100);
+
+    return `📊 Customer Summary:
 
 Total Orders: ${customerOrders.length}
 Total Amount Spent: ₹${totalSpent}
 Loyalty Level: ${loyalty}`;
+  }
 
-}
+  // ================= SYSTEM NAVIGATION =================
 
-// ================= SYSTEM NAVIGATION =================
+  // Assigned Tickets
+  if (
+    text.includes("open tickets") ||
+    text.includes("show tickets") ||
+    text.includes("assigned tickets")
+  ) {
+    const popup = document.getElementById("assignedBackdrop");
+    if (popup) popup.style.display = "flex";
+    return "📋 Opening Assigned Tickets section.";
+  }
 
-// Assigned Tickets
-if (
-  text.includes("open tickets") ||
-  text.includes("show tickets") ||
-  text.includes("assigned tickets")
-) {
-  const popup = document.getElementById("assignedBackdrop");
-  if (popup) popup.style.display = "flex";
-  return "📋 Opening Assigned Tickets section.";
-}
+  // Reports
+  if (
+    text.includes("open reports") ||
+    text.includes("show reports") ||
+    text.includes("weekly reports")
+  ) {
+    const reportsBackdrop = document.getElementById("reportsBackdrop");
+    const reportsModal = document.getElementById("reportsModal");
 
-// Reports
-if (
-  text.includes("open reports") ||
-  text.includes("show reports") ||
-  text.includes("weekly reports")
-){
-  const reportsBackdrop = document.getElementById("reportsBackdrop");
-  const reportsModal = document.getElementById("reportsModal");
+    if (reportsBackdrop) reportsBackdrop.style.display = "block";
+    if (reportsModal) reportsModal.style.display = "block";
 
-  if (reportsBackdrop) reportsBackdrop.style.display = "block";
-  if (reportsModal) reportsModal.style.display = "block";
+    return "📊 Opening Reports section.";
+  }
 
-  return "📊 Opening Reports section.";
-}
+  // Email
+  if (
+    text.includes("send email") ||
+    text.includes("email customer") ||
+    text.includes("open email section")
+  ) {
+    const emailBackdrop = document.getElementById("emailBackdrop");
+    const emailModal = document.getElementById("emailModal");
 
-// Email
-if (
-  text.includes("send email") ||
-  text.includes("email customer") ||
-  text.includes("open email section")
-) {
-  const emailBackdrop = document.getElementById("emailBackdrop");
-  const emailModal = document.getElementById("emailModal");
+    if (emailBackdrop) emailBackdrop.style.display = "block";
+    if (emailModal) emailModal.style.display = "block";
 
-  if (emailBackdrop) emailBackdrop.style.display = "block";
-  if (emailModal) emailModal.style.display = "block";
+    return "📩 Opening Email Customer section.";
+  }
 
-  return "📩 Opening Email Customer section.";
-}
+  // Orders page
+  if (text.includes("go to orders") || text.includes("orders page")) {
+    window.location.href = "orders.html";
+    return "📦 Redirecting to Orders page.";
+  }
 
-// Orders page
-if (text.includes("go to orders") || text.includes("orders page")) {
-  window.location.href = "orders.html";
-  return "📦 Redirecting to Orders page.";
-}
+  // Customers page
+  if (text.includes("go to customers")) {
+    window.location.href = "customers.html";
+    return "👤 Redirecting to Customers page.";
+  }
 
-// Customers page
-if (text.includes("go to customers")) {
-  window.location.href = "customers.html";
-  return "👤 Redirecting to Customers page.";
-}
+  // Calendar
+  if (text.includes("calendar")) {
+    window.location.href = "calendar.html";
+    return "📅 Redirecting to Calendar page.";
+  }
 
-// Calendar
-if (text.includes("calendar")) {
-  window.location.href = "calendar.html";
-  return "📅 Redirecting to Calendar page.";
-}
+  // Services
+  if (text.includes("services")) {
+    window.location.href = "services.html";
+    return "🛠️ Redirecting to Services page.";
+  }
 
-// Services
-if (text.includes("services")) {
-  window.location.href = "services.html";
-  return "🛠️ Redirecting to Services page.";
-}
+  // Home
+  if (text.includes("home") || text.includes("dashboard")) {
+    window.location.href = "index.html";
+    return "🏠 Redirecting to Home page.";
+  }
 
-// Home
-if (text.includes("home") || text.includes("dashboard")) {
-  window.location.href = "index.html";
-  return "🏠 Redirecting to Home page.";
-}
-
-// Close Tickets
-if (text.includes("close tickets")) {
-  const popup = document.getElementById("assignedBackdrop");
-  if (popup) popup.style.display = "none";
-  return "📋 Assigned Tickets closed.";
-}
+  // Close Tickets
+  if (text.includes("close tickets")) {
+    const popup = document.getElementById("assignedBackdrop");
+    if (popup) popup.style.display = "none";
+    return "📋 Assigned Tickets closed.";
+  }
 
   // ================= IF USER NOT IDENTIFIED =================
   if (!currentCustomer && text.includes("my")) {
@@ -479,7 +630,6 @@ if (text.includes("close tickets")) {
 
   // ================= PERSONAL QUESTIONS =================
   if (currentCustomer) {
-
     if (text.includes("my name")) {
       return `👤 Your name is ${currentCustomer.name}.`;
     }
@@ -507,13 +657,15 @@ if (text.includes("close tickets")) {
 
   // ================= SEARCH CUSTOMER =================
   if (window.customers && window.customers.length > 0) {
-
-    const foundCustomer = window.customers.find(c =>
-      text.split(" ").some(word =>
-        c.name.toLowerCase().includes(word) ||
-        c.email.toLowerCase().includes(word) ||
-        c.phone.includes(word)
-      )
+    const foundCustomer = window.customers.find((c) =>
+      text
+        .split(" ")
+        .some(
+          (word) =>
+            c.name.toLowerCase().includes(word) ||
+            c.email.toLowerCase().includes(word) ||
+            c.phone.includes(word),
+        ),
     );
 
     if (foundCustomer) {
@@ -532,47 +684,53 @@ With Wishlistz: ${foundCustomer.duration}`;
     }
   }
 
- // ================= ORDER HISTORY =================
-if (text.includes("my orders") || text.includes("order history")) {
+  // ================= ORDER HISTORY =================
+  if (text.includes("my orders") || text.includes("order history")) {
+    if (!isLoggedIn || !currentCustomer) {
+      return "🔐 Please login first using: login your-email@example.com";
+    }
 
-  if (!isLoggedIn || !currentCustomer) {
-    return "🔐 Please login first using: login your-email@example.com";
-  }
+    if (!window.orders || window.orders.length === 0) {
+      return "⚠ Order database not loaded yet.";
+    }
 
-  if (!window.orders || window.orders.length === 0) {
-    return "⚠ Order database not loaded yet.";
-  }
+    const customerOrders = window.orders.filter(
+      (o) => o.email.toLowerCase() === currentCustomer.email.toLowerCase(),
+    );
 
-  const customerOrders = window.orders.filter(o =>
-    o.email.toLowerCase() === currentCustomer.email.toLowerCase()
-  );
+    if (customerOrders.length === 0) {
+      return "📦 You have no orders yet.";
+    }
 
-  if (customerOrders.length === 0) {
-    return "📦 You have no orders yet.";
-  }
+    let orderList = "📦 Your Order History:\n\n";
 
-  let orderList = "📦 Your Order History:\n\n";
-
-  customerOrders.forEach(o => {
-    orderList += 
-`Order ID: ${o.orderId}
+    customerOrders.forEach((o) => {
+      orderList += `Order ID: ${o.orderId}
 Product: ${o.product}
 Amount: ₹${o.amount}
 Status: ${o.status}
 Date: ${o.date}
 -------------------------\n`;
-  });
+    });
 
-  return orderList;
-}
+    return orderList;
+  }
 
   // ================= PAYMENT ISSUE =================
-  if (text.includes("payment") || text.includes("paid but") || text.includes("transaction failed")) {
+  if (
+    text.includes("payment") ||
+    text.includes("paid but") ||
+    text.includes("transaction failed")
+  ) {
     return "💳 It looks like a payment-related issue.\n\nPlease verify:\n• Transaction ID\n• Payment status in Orders section\n• Bank confirmation\n\nIf payment is deducted but order not confirmed, create a high-priority ticket immediately.";
   }
 
   // ================= DELIVERY DELAY =================
-  if (text.includes("delivery") || text.includes("late") || text.includes("delay")) {
+  if (
+    text.includes("delivery") ||
+    text.includes("late") ||
+    text.includes("delay")
+  ) {
     return "🚚 For delivery delays:\n\n• Check order tracking in Orders section\n• Verify dispatch date\n• Inform customer about expected delivery date\n\nIf severely delayed, escalate to logistics team.";
   }
 
@@ -592,10 +750,7 @@ Date: ${o.date}
   }
 
   // ================= CANCELLATION =================
-  if (
-  text.includes("cancel my order") ||
-  text.includes("order cancellation")
-) {
+  if (text.includes("cancel my order") || text.includes("order cancellation")) {
     return "❌ Order cancellation request.\n\n• Check if order is dispatched\n• If not shipped → Cancel immediately\n• If shipped → Inform customer cancellation not possible\n• Update order status accordingly";
   }
 

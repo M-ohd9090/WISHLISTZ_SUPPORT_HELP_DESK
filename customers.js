@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===================== LOAD DATA FROM CSV =====================
   async function loadCustomers() {
     try {
-      const response = await fetch("customers.csv.xls");
+      const response = await fetch("customers.csv");
       const csvText = await response.text();
 
       const rows = csvText.split("\n").slice(1);
@@ -35,32 +35,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-window.orders = [];
+  window.orders = [];
 
-async function loadOrders() {
-  const response = await fetch("orders.csv.xls");
-  const csvText = await response.text();
+  async function loadOrders() {
+    const response = await fetch("orders.csv.xls");
+    const csvText = await response.text();
 
-  const rows = csvText.split("\n").slice(1);
+    const rows = csvText.split("\n").slice(1);
 
-  window.orders = rows
-    .filter(row => row.trim() !== "")
-    .map(row => {
-      const cols = row.split(",");
-      return {
-        email: cols[0],
-        orderId: cols[1],
-        product: cols[2],
-        amount: cols[3],
-        status: cols[4],
-        date: cols[5],
-      };
-    });
+    window.orders = rows
+      .filter((row) => row.trim() !== "")
+      .map((row) => {
+        const cols = row.split(",");
+        return {
+          email: cols[0],
+          orderId: cols[1],
+          product: cols[2],
+          amount: cols[3],
+          status: cols[4],
+          date: cols[5],
+        };
+      });
 
-  console.log("Orders loaded:", window.orders);
-}
+    console.log("Orders loaded:", window.orders);
+  }
 
-loadOrders();
+  loadOrders();
 
   // ===================== DISPLAY CUSTOMERS =====================
   function displayCustomers(list) {
