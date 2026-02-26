@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ===================== LOAD DATA FROM CSV =====================
   async function loadCustomers() {
     try {
-      const response = await fetch("customers.csv");
+      const response = await fetch("customers.csv.xls");
       const csvText = await response.text();
 
       const rows = csvText.split("\n").slice(1);
